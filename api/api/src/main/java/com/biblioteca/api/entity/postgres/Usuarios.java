@@ -1,4 +1,4 @@
-package com.biblioteca.api.entity;
+package com.biblioteca.api.entity.postgres;
 
 import jakarta.persistence.*;
 import lombok.*;

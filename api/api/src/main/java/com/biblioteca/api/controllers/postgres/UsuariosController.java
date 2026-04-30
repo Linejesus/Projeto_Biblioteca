@@ -1,13 +1,10 @@
-package com.biblioteca.api.controllers;
+package com.biblioteca.api.controllers.postgres;
 
 import com.biblioteca.api.DTO.UsuarioCadastroDTO;
-import com.biblioteca.api.entity.Usuarios;
-import com.biblioteca.api.service.UsuariosService;
+import com.biblioteca.api.service.postgres.UsuariosService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")

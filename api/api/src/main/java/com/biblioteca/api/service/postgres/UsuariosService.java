@@ -1,9 +1,8 @@
-package com.biblioteca.api.service;
+package com.biblioteca.api.service.postgres;
 
 import com.biblioteca.api.DTO.UsuarioCadastroDTO;
-import com.biblioteca.api.entity.Usuarios;
-import com.biblioteca.api.repository.UsuariosRepository;
-import lombok.RequiredArgsConstructor;
+import com.biblioteca.api.entity.postgres.Usuarios;
+import com.biblioteca.api.repository.postgres.UsuariosRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
