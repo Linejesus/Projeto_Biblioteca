@@ -23,9 +23,8 @@ public class Emprestimo {
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuarios usuario;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_livro", nullable = false)
-    private Livro livro;
+    @Column(name = "id_livro", nullable = false)
+    private String livro;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_biblioteca", nullable = false)

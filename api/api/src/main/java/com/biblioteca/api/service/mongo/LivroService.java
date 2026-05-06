@@ -4,9 +4,13 @@ import com.biblioteca.api.DTO.ListarBibliotecaDTO;
 import com.biblioteca.api.DTO.LivroResumoDTO;
 import com.biblioteca.api.DTO.LivrosCadastroDTO;
 import com.biblioteca.api.entity.mongo.Livro;
+import com.biblioteca.api.entity.neo4j.LivroNode;
 import com.biblioteca.api.entity.postgres.Biblioteca;
 import com.biblioteca.api.repository.mongo.LivroRepository;
+import com.biblioteca.api.repository.neo4j.BibliotecaNodeRepository;
+import com.biblioteca.api.repository.neo4j.LivroNodeRepository;
 import com.biblioteca.api.repository.postgres.BibliotecaRepository;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +26,17 @@ public class LivroService {
 
     private final BibliotecaRepository bibliotecaRepository;
     private final LivroRepository livroRepository;
+    private final BibliotecaNodeRepository bibliotecaNodeRepository;
+    private final LivroNodeRepository livroNodeRepository;
 
+    @Transactional("neo4jTransactionManager")
     public Livro salvar(LivrosCadastroDTO dto){
+
+        // 1️⃣ valida biblioteca
         bibliotecaRepository.findById(dto.getIdBiblioteca())
                 .orElseThrow(() -> new RuntimeException("Biblioteca não encontrada"));
 
+        // 2️⃣ salva no Mongo
         Livro livro = Livro.builder()
                 .idBiblioteca(dto.getIdBiblioteca())
                 .titulo(dto.getTitulo())
@@ -41,7 +51,42 @@ public class LivroService {
                 .idioma(dto.getIdioma())
                 .build();
 
-        return livroRepository.save(livro);
+        Livro salvo = livroRepository.save(livro);
+
+        // 3️⃣ cria node no Neo4j
+        LivroNode livroNode = new LivroNode(
+                salvo.getId(),
+                salvo.getTitulo()
+        );
+
+        livroNodeRepository.save(livroNode);
+
+        // 4️⃣ relacionamento com biblioteca
+        bibliotecaNodeRepository.relacionarComLivro(
+                dto.getIdBiblioteca(),
+                salvo.getId()
+        );
+
+        // 5️⃣ 🔥 RELAÇÃO DE SEQUÊNCIA
+        if (dto.getIdLivroAnterior() != null) {
+
+            // valida se o livro anterior existe no Mongo
+            Livro livroAnterior = livroRepository.findById(String.valueOf(dto.getIdLivroAnterior()))
+                    .orElseThrow(() -> new RuntimeException("Livro anterior não encontrado"));
+
+            // garante que ele existe no Neo4j
+            livroNodeRepository.save(
+                    new LivroNode(livroAnterior.getId(), livroAnterior.getTitulo())
+            );
+
+            // cria relação
+            livroNodeRepository.criarSequencia(
+                    salvo.getId(),
+                    livroAnterior.getId()
+            );
+        }
+
+        return salvo;
     }
 
     public List<ListarBibliotecaDTO> buscarBibliotecaDisponivel(String titulo) {

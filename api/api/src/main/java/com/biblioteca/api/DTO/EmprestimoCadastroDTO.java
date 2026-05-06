@@ -11,7 +11,7 @@ public class EmprestimoCadastroDTO {
     Long idUsuario;
 
     @NotNull(message = "Livro é obrigatório")
-    Long idLivro;
+    String idLivro;
 
     @NotNull(message = "Biblioteca é obrigatória")
     Long idBiblioteca;

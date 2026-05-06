@@ -1,18 +1,25 @@
 package com.biblioteca.api.service.postgres;
 
 import com.biblioteca.api.DTO.BibliotecaCadastroDTO;
+import com.biblioteca.api.entity.neo4j.BibliotecaNode;
 import com.biblioteca.api.entity.postgres.Biblioteca;
+import com.biblioteca.api.repository.neo4j.BibliotecaNodeRepository;
 import com.biblioteca.api.repository.postgres.BibliotecaRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
 public class BibliotecaService {
     private final BibliotecaRepository repository;
+    private final BibliotecaNodeRepository bibliotecaNoderepository;
 
-    public BibliotecaService(BibliotecaRepository repository){
+    public BibliotecaService(BibliotecaRepository repository, BibliotecaNodeRepository bibliotecaNoderepository){
         this.repository = repository;
+        this.bibliotecaNoderepository = bibliotecaNoderepository;
     }
-
+    @Transactional("transactionManager")
     public Biblioteca salvar(BibliotecaCadastroDTO novaBiblioteca){
         Biblioteca biblioteca = new Biblioteca();
 
@@ -23,7 +30,13 @@ public class BibliotecaService {
         biblioteca.setCidade(novaBiblioteca.getEstado());
         biblioteca.setEstado(novaBiblioteca.getEstado());
 
-        return repository.save(biblioteca);
+        Biblioteca salvo = repository.save(biblioteca);
+
+        BibliotecaNode bibliotecaNode1 = new BibliotecaNode(salvo.getIdBiblioteca(), salvo.getNome());
+
+        bibliotecaNoderepository.save(bibliotecaNode1);
+
+        return salvo;
     }
 
     public List<Biblioteca> listarTodos(){

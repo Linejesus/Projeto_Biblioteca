@@ -3,15 +3,21 @@ package com.biblioteca.api.service.postgres;
 import com.biblioteca.api.DTO.EmprestimoCadastroDTO;
 import com.biblioteca.api.DTO.MeusEmprestimosDTO;
 import com.biblioteca.api.entity.mongo.Livro;
+import com.biblioteca.api.entity.neo4j.BibliotecaNode;
+import com.biblioteca.api.entity.neo4j.LivroNode;
+import com.biblioteca.api.entity.neo4j.Pessoa;
 import com.biblioteca.api.entity.postgres.Biblioteca;
 import com.biblioteca.api.entity.postgres.Emprestimo;
 import com.biblioteca.api.entity.postgres.Usuarios;
+import com.biblioteca.api.repository.neo4j.BibliotecaNodeRepository;
+import com.biblioteca.api.repository.neo4j.LivroNodeRepository;
+import com.biblioteca.api.repository.neo4j.PessoaRepository;
 import com.biblioteca.api.repository.postgres.BibliotecaRepository;
 import com.biblioteca.api.repository.postgres.EmprestimoRepository;
 import com.biblioteca.api.repository.mongo.LivroRepository;
 import com.biblioteca.api.repository.postgres.UsuariosRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +33,12 @@ public class EmprestimoService {
     private final UsuariosRepository usuariosRepository;
     private final LivroRepository livroRepository;
     private final BibliotecaRepository bibliotecaRepository;
+    private final BibliotecaNodeRepository bibliotecaNodeRepository;
+    private final LivroNodeRepository livroNodeRepository;
+    private final PessoaRepository pessoaNodeRepository;
 
-    @Transactional
+
+    @Transactional("transactionManager")
     public Emprestimo salvar(EmprestimoCadastroDTO novoEmprestimo) {
 
         Usuarios usuario = usuariosRepository.findById(novoEmprestimo.getIdUsuario())
@@ -42,10 +52,22 @@ public class EmprestimoService {
 
         Emprestimo emprestimo = new Emprestimo();
         emprestimo.setUsuario(usuario);
-        emprestimo.setLivro(livro);
+        emprestimo.setLivro(livro.getId());
         emprestimo.setBiblioteca(biblioteca);
 
-        return emprestimoRepository.save(emprestimo);
+        Emprestimo salvo = emprestimoRepository.save(emprestimo);
+
+        pessoaNodeRepository.relacionarPessoaLivro(
+                usuario.getIdUsuario(),
+                livro.getId()
+        );
+
+        pessoaNodeRepository.relacionarPessoaBiblioteca(
+                usuario.getIdUsuario(),
+                biblioteca.getIdBiblioteca()
+        );
+
+        return salvo;
     }
 
     public List<Emprestimo> listarTodos() {
@@ -75,8 +97,8 @@ public class EmprestimoService {
 
         return emprestimos.stream().map(e -> {
 
-            Livro livro = livroRepository.findById(e.getLivro().getId())
-                    .orElse(null); // evita quebrar se não achar
+            Livro livro = livroRepository.findById(String.valueOf(e.getLivro()))
+                    .orElse(null);
 
             return new MeusEmprestimosDTO(
                     e.getIdEmprestimo(),

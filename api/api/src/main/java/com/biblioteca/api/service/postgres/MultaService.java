@@ -7,6 +7,7 @@ import com.biblioteca.api.repository.postgres.MultaRepository;
 import com.biblioteca.api.entity.postgres.Multa;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -35,6 +36,7 @@ public class MultaService {
         return multaRepository.findByEmprestimoIdEmprestimo(idEmprestimo);
     }
 
+    @Transactional("transactionManager")
     public Multa gerarMulta(Long idEmprestimo) {
 
         if (multaRepository.existsByEmprestimoIdEmprestimo(idEmprestimo)) {
@@ -68,6 +70,7 @@ public class MultaService {
         return multaRepository.save(multa);
     }
 
+    @Transactional("transactionManager")
     public Multa pagarMulta(Long idMulta) {
         Multa multa = buscarPorId(idMulta);
 

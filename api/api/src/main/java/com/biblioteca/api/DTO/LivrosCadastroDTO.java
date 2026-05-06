@@ -11,6 +11,7 @@ import java.util.List;
 public class LivrosCadastroDTO {
 
         private Long idBiblioteca;
+        private Long idLivroAnterior;
         private String titulo;
         private Integer anoPublicacao;
 

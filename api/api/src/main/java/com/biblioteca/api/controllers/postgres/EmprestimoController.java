@@ -2,12 +2,16 @@ package com.biblioteca.api.controllers.postgres;
 
 import com.biblioteca.api.DTO.EmprestimoCadastroDTO;
 import com.biblioteca.api.service.postgres.EmprestimoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@RestController
+@RequestMapping("/emprestimos")
+@RequiredArgsConstructor
 public class EmprestimoController {
 
-    private EmprestimoService emprestimoService;
+    private final EmprestimoService emprestimoService;
 
     @PostMapping
     public ResponseEntity<?> criar(@RequestBody EmprestimoCadastroDTO novoEmprestimo) {
