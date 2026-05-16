@@ -8,6 +8,7 @@ import com.biblioteca.api.repository.postgres.UsuariosRepository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -30,7 +31,11 @@ public class UsuariosService{
 
         Usuarios salvo = repository.save(usuario);
 
+        System.out.println("SALVO ID: " + salvo.getIdUsuario());
+
         Pessoa node = new Pessoa(salvo.getIdUsuario(), salvo.getNome());
+
+        System.out.println(node);
 
         pessoaRepository.save(node);
 
@@ -51,6 +56,18 @@ public class UsuariosService{
             throw new RuntimeException("Usuário não encontrado");
         }
         repository.deleteById(id);
+    }
+
+    public Usuarios login(String email, String senha){
+
+        Usuarios usuario = repository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        if(!usuario.getSenha().equals(senha)){
+            throw new RuntimeException("Senha inválida");
+        }
+
+        return usuario;
     }
 
 

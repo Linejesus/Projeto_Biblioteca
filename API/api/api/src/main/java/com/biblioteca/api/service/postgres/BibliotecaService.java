@@ -27,7 +27,7 @@ public class BibliotecaService {
         biblioteca.setRua(novaBiblioteca.getRua());
         biblioteca.setNumero(novaBiblioteca.getNumero());
         biblioteca.setBairro(novaBiblioteca.getBairro());
-        biblioteca.setCidade(novaBiblioteca.getEstado());
+        biblioteca.setCidade(novaBiblioteca.getCidade());
         biblioteca.setEstado(novaBiblioteca.getEstado());
 
         Biblioteca salvo = repository.save(biblioteca);

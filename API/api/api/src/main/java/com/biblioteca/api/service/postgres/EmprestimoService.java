@@ -105,7 +105,7 @@ public class EmprestimoService {
                     livro != null ? livro.getTitulo() : "Livro não encontrado",
                     livro != null ? livro.getAutores() : List.of(),
                     e.getDataEmprestimo(),
-                    e.getDataDevolucaoReal(),
+                    e.getDataDevolucaoPrevista(),
                     e.getRenovacoes(),
                     e.getStatus()
             );

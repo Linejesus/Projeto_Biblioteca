@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/multas")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class MultaController {
 
     private final MultaService multaService;

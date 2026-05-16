@@ -14,7 +14,7 @@ public class MeusEmprestimosDTO {
     private String titulo;
     private List<Autor> autores;
     private LocalDate dataEmprestimo;
-    private LocalDate dataDevolucaoReal;
+    private LocalDate dataDevolucaoPrevista;
     private Integer renovacoes;
     private String status;
 }
