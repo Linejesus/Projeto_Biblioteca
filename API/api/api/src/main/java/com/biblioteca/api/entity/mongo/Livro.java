@@ -16,6 +16,8 @@ public class Livro {
     @Id
     private String id;
 
+    private String capa;
+    
     private Long idBiblioteca;
     private String titulo;
     private Integer anoPublicacao;
@@ -23,7 +25,7 @@ public class Livro {
     private List<Autor> autores;
     private List<String> generos;
 
-    private Editora editora;
+    private List<Editora> editoras;
     private List<Edicao> edicoes;
 
     private List<String> tags;

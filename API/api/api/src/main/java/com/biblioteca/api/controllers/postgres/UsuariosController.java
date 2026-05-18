@@ -2,6 +2,7 @@ package com.biblioteca.api.controllers.postgres;
 
 import com.biblioteca.api.DTO.UsuarioCadastroDTO;
 import com.biblioteca.api.entity.postgres.Usuarios;
+import com.biblioteca.api.DTO.AtualizarUsuarioDTO;
 import com.biblioteca.api.DTO.LoginDTO;
 import com.biblioteca.api.service.postgres.UsuariosService;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +19,6 @@ public class UsuariosController {
 
     @PostMapping
     public ResponseEntity<?> criar(@RequestBody UsuarioCadastroDTO novoUsuario) {
-
-        System.out.println("NOME: " + novoUsuario.getNome());
-        System.out.println("CPF: " + novoUsuario.getCpf());
-        System.out.println("EMAIL: " + novoUsuario.getEmail());
-        System.out.println("SENHA: " + novoUsuario.getSenha());
 
         try {
             return ResponseEntity.ok(service.salvar(novoUsuario));
@@ -69,6 +65,27 @@ public class UsuariosController {
             return ResponseEntity.ok(usuario);
 
         } catch(Exception e){
+
+            return ResponseEntity.badRequest().body(e.getMessage());
+
+        }
+
+    }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> atualizar(
+            @PathVariable Long id,
+            @RequestBody AtualizarUsuarioDTO dadosAtualizados
+    ) {
+
+        try {
+
+            return ResponseEntity.ok(
+                    service.atualizar(id, dadosAtualizados)
+            );
+
+        } catch (Exception e) {
 
             return ResponseEntity.badRequest().body(e.getMessage());
 

@@ -1,6 +1,9 @@
 package com.biblioteca.api.service.postgres;
 
+import com.biblioteca.api.DTO.AtualizarEmprestimoDTO;
+import com.biblioteca.api.DTO.AtualizarUsuarioDTO;
 import com.biblioteca.api.DTO.EmprestimoCadastroDTO;
+import com.biblioteca.api.DTO.ListarEmprestimosDTO;
 import com.biblioteca.api.DTO.MeusEmprestimosDTO;
 import com.biblioteca.api.entity.mongo.Livro;
 import com.biblioteca.api.entity.neo4j.BibliotecaNode;
@@ -134,5 +137,62 @@ public class EmprestimoService {
         meuEmprestimo.setDataDevolucaoPrevista(novaData);
 
         emprestimoRepository.save(meuEmprestimo);
+    }
+
+
+    public List<ListarEmprestimosDTO> listarTodosDTO() {
+
+        List<Emprestimo> emprestimos = emprestimoRepository.findAll();
+
+        return emprestimos.stream().map(e -> {
+
+            Livro livro = livroRepository.findById(String.valueOf(e.getLivro()))
+                    .orElse(null);
+
+            return new ListarEmprestimosDTO(
+                    e.getIdEmprestimo(),
+                    e.getUsuario().getIdUsuario(),
+                    e.getLivro(),
+                    e.getBiblioteca().getIdBiblioteca(),
+                    e.getUsuario().getNome(),
+                    livro != null ? livro.getTitulo() : "Livro não encontrado",
+                    e.getBiblioteca().getNome(),
+                    e.getDataEmprestimo(),
+                    e.getDataDevolucaoPrevista(),
+                    e.getStatus()
+            );
+
+        }).toList();
+    }
+
+    public void atualizar(Long id, AtualizarEmprestimoDTO dadosAtualizados){
+
+        Emprestimo emprestimo = emprestimoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Empréstimo não encontrado"));
+
+        Usuarios usuario = usuariosRepository.findById(dadosAtualizados.getIdUsuario())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        Livro livro = livroRepository.findById(dadosAtualizados.getIdLivro())
+                .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
+
+        Biblioteca biblioteca = bibliotecaRepository.findById(dadosAtualizados.getIdBiblioteca())
+                .orElseThrow(() -> new RuntimeException("Biblioteca não encontrada"));
+
+        emprestimo.setUsuario(usuario);
+
+        emprestimo.setLivro(livro.getId());
+
+        emprestimo.setBiblioteca(biblioteca);
+
+        emprestimo.setDataEmprestimo(dadosAtualizados.getDataEmprestimo());
+
+        emprestimo.setDataDevolucaoPrevista(
+                dadosAtualizados.getDataDevolucaoPrevista()
+        );
+
+        emprestimo.setStatus(dadosAtualizados.getStatus());
+
+        emprestimoRepository.save(emprestimo);
     }
 }

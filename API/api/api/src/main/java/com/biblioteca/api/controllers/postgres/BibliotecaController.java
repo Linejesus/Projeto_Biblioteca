@@ -1,5 +1,6 @@
 package com.biblioteca.api.controllers.postgres;
 
+import com.biblioteca.api.DTO.AtualizarBibliotecaDTO;
 import com.biblioteca.api.DTO.BibliotecaCadastroDTO;
 import com.biblioteca.api.service.postgres.BibliotecaService;
 import lombok.RequiredArgsConstructor;
@@ -49,4 +50,25 @@ public class BibliotecaController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> atualizar(
+            @PathVariable Long id,
+            @RequestBody AtualizarBibliotecaDTO dadosAtualizados
+    ) {
+
+        try {
+
+            return ResponseEntity.ok(
+                    service.atualizar(id, dadosAtualizados)
+            );
+
+        } catch (Exception e) {
+
+            return ResponseEntity.badRequest().body(e.getMessage());
+
+        }
+
+    }
+    
 }

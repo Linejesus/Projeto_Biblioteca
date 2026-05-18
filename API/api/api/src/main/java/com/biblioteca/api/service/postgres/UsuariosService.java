@@ -1,5 +1,6 @@
 package com.biblioteca.api.service.postgres;
 
+import com.biblioteca.api.DTO.AtualizarUsuarioDTO;
 import com.biblioteca.api.DTO.UsuarioCadastroDTO;
 import com.biblioteca.api.entity.neo4j.Pessoa;
 import com.biblioteca.api.entity.postgres.Usuarios;
@@ -71,4 +72,18 @@ public class UsuariosService{
     }
 
 
+    public Usuarios atualizar(Long id, AtualizarUsuarioDTO dadosAtualizados){
+
+        Usuarios usuario = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        usuario.setNome(dadosAtualizados.getNome());
+
+        usuario.setEmail(dadosAtualizados.getEmail());
+
+        usuario.setSenha(dadosAtualizados.getSenha());
+
+        return repository.save(usuario);
+
+    }
 }

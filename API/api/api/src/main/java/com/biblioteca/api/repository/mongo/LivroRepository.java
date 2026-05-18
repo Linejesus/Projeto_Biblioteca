@@ -11,4 +11,8 @@ public interface LivroRepository extends MongoRepository<Livro, String> {
     List<Livro> findByAutoresNome(String Autor);
 
     List<Livro> findTop7ByTagsContaining(String tag);
+
+    List<Livro> findTop10ByOrderByIdDesc();
+
+    List<Livro> findTop10ByOrderByAvaliacaoMediaDesc();
 }

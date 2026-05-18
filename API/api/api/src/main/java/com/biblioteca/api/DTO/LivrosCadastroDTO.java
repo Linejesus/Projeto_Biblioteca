@@ -15,10 +15,12 @@ public class LivrosCadastroDTO {
         private String titulo;
         private Integer anoPublicacao;
 
+        private String capa;
+
         private List<Autor> autores;
         private List<String> generos;
 
-        private Editora editora;
+        private List<Editora> editoras;
         private List<Edicao> edicoes;
 
         private List<String> tags;

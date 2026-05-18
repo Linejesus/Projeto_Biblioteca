@@ -1,10 +1,18 @@
 package com.biblioteca.api.controllers.postgres;
 
+import com.biblioteca.api.DTO.AtualizarEmprestimoDTO;
+import com.biblioteca.api.DTO.AtualizarUsuarioDTO;
 import com.biblioteca.api.DTO.EmprestimoCadastroDTO;
+import com.biblioteca.api.DTO.ListarEmprestimosDTO;
 import com.biblioteca.api.service.postgres.EmprestimoService;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+
 
 @RestController
 @RequestMapping("/emprestimos")
@@ -35,7 +43,7 @@ public class EmprestimoController {
     @GetMapping
     public ResponseEntity<?> listar() {
         try{
-            return ResponseEntity.ok(emprestimoService.listarTodos());
+            return ResponseEntity.ok(emprestimoService.listarTodosDTO());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -67,5 +75,24 @@ public class EmprestimoController {
         }
     }
 
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> atualizar(
+            @PathVariable Long id,
+            @RequestBody AtualizarEmprestimoDTO dadosAtualizados
+    ) {
+
+        try {
+
+            emprestimoService.atualizar(id, dadosAtualizados);
+
+            return ResponseEntity.ok().body(Map.of("mensagem", "Empréstimo atualizado com sucesso"));
+
+        } catch (Exception e) {
+
+            return ResponseEntity.badRequest().body(e.getMessage());
+
+        }
+    }
 
 }

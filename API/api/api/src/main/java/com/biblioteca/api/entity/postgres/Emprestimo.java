@@ -1,6 +1,5 @@
 package com.biblioteca.api.entity.postgres;
 
-import com.biblioteca.api.entity.mongo.Livro;
 import jakarta.persistence.*;
 import lombok.*;
 

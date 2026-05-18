@@ -1,5 +1,6 @@
 package com.biblioteca.api.service.postgres;
 
+import com.biblioteca.api.DTO.AtualizarBibliotecaDTO;
 import com.biblioteca.api.DTO.BibliotecaCadastroDTO;
 import com.biblioteca.api.entity.neo4j.BibliotecaNode;
 import com.biblioteca.api.entity.postgres.Biblioteca;
@@ -53,5 +54,21 @@ public class BibliotecaService {
             throw new RuntimeException("Biblioteca não encontrado");
         }
         repository.deleteById(id);
+    }
+
+    public Biblioteca atualizar(Long id, AtualizarBibliotecaDTO dadosAtualizados){
+
+        Biblioteca biblioteca = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Biblioteca não encontrada"));
+
+        biblioteca.setNome(dadosAtualizados.getNome());
+        biblioteca.setEstado(dadosAtualizados.getEstado());
+        biblioteca.setCidade(dadosAtualizados.getCidade());
+        biblioteca.setBairro(dadosAtualizados.getBairro());
+        biblioteca.setRua(dadosAtualizados.getRua());
+        biblioteca.setNumero(dadosAtualizados.getNumero());
+
+        return repository.save(biblioteca);
+
     }
 }

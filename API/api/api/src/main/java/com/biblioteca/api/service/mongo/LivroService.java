@@ -1,6 +1,8 @@
 package com.biblioteca.api.service.mongo;
 
 import com.biblioteca.api.DTO.ListarBibliotecaDTO;
+import com.biblioteca.api.DTO.LivroDetalhesDTO;
+import com.biblioteca.api.DTO.LivroHomeDTO;
 import com.biblioteca.api.DTO.LivroResumoDTO;
 import com.biblioteca.api.DTO.LivrosCadastroDTO;
 import com.biblioteca.api.entity.mongo.Livro;
@@ -43,12 +45,13 @@ public class LivroService {
                 .anoPublicacao(dto.getAnoPublicacao())
                 .autores(dto.getAutores())
                 .generos(dto.getGeneros())
-                .editora(dto.getEditora())
+                .editoras(dto.getEditoras())
                 .edicoes(dto.getEdicoes())
                 .tags(dto.getTags())
                 .avaliacaoMedia(dto.getAvaliacaoMedia())
                 .numeroPaginas(dto.getNumeroPaginas())
                 .idioma(dto.getIdioma())
+                .capa(dto.getCapa())
                 .build();
 
         Livro salvo = livroRepository.save(livro);
@@ -125,8 +128,14 @@ public class LivroService {
 
         return livros.stream()
         .map(l -> new LivroResumoDTO(
+                l.getId(),
                 l.getTitulo(),
-                l.getAutores()
+                l.getAnoPublicacao(),
+                l.getAutores(),
+                l.getGeneros(),
+                l.getEditoras(),
+                l.getEdicoes(),
+                l.getCapa()
         ))
         .collect(Collectors.toList());
     }
@@ -137,8 +146,14 @@ public class LivroService {
 
         return livros.stream()
         .map(l -> new LivroResumoDTO(
+                l.getId(),
                 l.getTitulo(),
-                l.getAutores()
+                l.getAnoPublicacao(),
+                l.getAutores(),
+                l.getGeneros(),
+                l.getEditoras(),
+                l.getEdicoes(),
+                l.getCapa()
         ))
         .collect(Collectors.toList());
     }
@@ -149,8 +164,14 @@ public class LivroService {
 
         return livros.stream()
         .map(l -> new LivroResumoDTO(
+                l.getId(),
                 l.getTitulo(),
-                l.getAutores()
+                l.getAnoPublicacao(),
+                l.getAutores(),
+                l.getGeneros(),
+                l.getEditoras(),
+                l.getEdicoes(),
+                l.getCapa()
         ))
         .collect(Collectors.toList());
     }
@@ -161,8 +182,69 @@ public class LivroService {
 
         return livros.stream()
                 .map(l -> new LivroResumoDTO(
+                        l.getId(),
                         l.getTitulo(),
-                        l.getAutores()
+                        l.getAnoPublicacao(),
+                        l.getAutores(),
+                        l.getGeneros(),
+                        l.getEditoras(),
+                        l.getEdicoes(),
+                        l.getCapa()
                 )).collect(Collectors.toList());
     }
+
+
+        public List<LivroHomeDTO> buscarLivrosHome() {
+
+                List<Livro> livros =
+                        livroRepository.findTop10ByOrderByIdDesc();
+
+                return livros.stream()
+                        .map(l -> new LivroHomeDTO(
+                                l.getId(),
+                                l.getTitulo(),
+                                l.getAutores(),
+                                l.getCapa(),
+                                l.getAvaliacaoMedia()
+                        ))
+                        .toList();
+        }
+
+
+        public List<LivroHomeDTO> buscarMelhorAvaliados() {
+
+                List<Livro> livros =
+                        livroRepository.findTop10ByOrderByAvaliacaoMediaDesc();
+
+                return livros.stream()
+                        .map(l -> new LivroHomeDTO(
+                                l.getId(),
+                                l.getTitulo(),
+                                l.getAutores(),
+                                l.getCapa(),
+                                l.getAvaliacaoMedia()
+                        ))
+                        .toList();
+        }
+
+
+        public LivroDetalhesDTO buscarDetalhesLivro(String id){
+
+                Livro livro = livroRepository.findById(id)
+                        .orElseThrow(() ->
+                                new RuntimeException("Livro não encontrado"));
+
+                return new LivroDetalhesDTO(
+                        livro.getId(),
+                        livro.getTitulo(),
+                        livro.getAutores(),
+                        livro.getCapa(),
+                        livro.getAvaliacaoMedia(),
+                        livro.getAnoPublicacao(),
+                        livro.getNumeroPaginas(),
+                        livro.getIdioma(),
+                        livro.getGeneros(),
+                        livro.getTags()
+                );
+        }
 }

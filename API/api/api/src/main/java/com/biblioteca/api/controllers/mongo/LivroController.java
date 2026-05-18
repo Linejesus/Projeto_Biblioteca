@@ -1,6 +1,8 @@
 package com.biblioteca.api.controllers.mongo;
 
 import com.biblioteca.api.DTO.ListarBibliotecaDTO;
+import com.biblioteca.api.DTO.LivroDetalhesDTO;
+import com.biblioteca.api.DTO.LivroHomeDTO;
 import com.biblioteca.api.DTO.LivroResumoDTO;
 import com.biblioteca.api.DTO.LivrosCadastroDTO;
 import com.biblioteca.api.entity.mongo.Livro;
@@ -14,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/livros")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class LivroController {
 
     private final LivroService livroService;
@@ -39,10 +42,10 @@ public class LivroController {
             @RequestParam String categoria) {
         return ResponseEntity.ok(livroService.buscarLivrosCategoria(categoria));
     }
-
-    @GetMapping("/autor")
-    public ResponseEntity<List<LivroResumoDTO>> buscarPorAutor(
-            @RequestParam String autor) {
+    
+    @GetMapping("/autor/{autor}")
+    public ResponseEntity<List<LivroResumoDTO>> buscarLivrosAutor(
+            @PathVariable String autor){
         return ResponseEntity.ok(livroService.buscarLivrosAutor(autor));
     }
 
@@ -55,5 +58,24 @@ public class LivroController {
     @GetMapping
     public ResponseEntity<List<LivroResumoDTO>> listarTodos() {
         return ResponseEntity.ok(livroService.listarTodos());
+    }
+
+    @GetMapping("/home")
+    public List<LivroHomeDTO> buscarLivrosHome() {
+        return livroService.buscarLivrosHome();
+    }
+
+    @GetMapping("/melhor-avaliados")
+    public List<LivroHomeDTO> buscarMelhorAvaliados() {
+        return livroService.buscarMelhorAvaliados();
+    }
+
+    @GetMapping("/detalhes/{id}")
+    public ResponseEntity<LivroDetalhesDTO> buscarDetalhes(
+            @PathVariable String id
+    ){
+        return ResponseEntity.ok(
+                livroService.buscarDetalhesLivro(id)
+        );
     }
 }
