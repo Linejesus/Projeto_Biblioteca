@@ -19,5 +19,6 @@ public class AtualizarEmprestimoDTO {
     private Long idBiblioteca;
     private LocalDate dataEmprestimo;
     private LocalDate dataDevolucaoPrevista;
+    private LocalDate dataDevolucaoReal;
     private String status;
 }

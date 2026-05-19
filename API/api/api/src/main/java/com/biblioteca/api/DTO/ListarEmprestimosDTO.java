@@ -22,5 +22,6 @@ public class ListarEmprestimosDTO {
     private String nomeBiblioteca;
     private LocalDate dataEmprestimo;
     private LocalDate dataDevolucaoPrevista;
+    private LocalDate dataDevolucaoReal;
     private String status;
 }

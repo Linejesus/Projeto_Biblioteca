@@ -1,6 +1,9 @@
 package com.biblioteca.api.service.postgres;
 
 
+import com.biblioteca.api.DTO.ListarEmprestimosDTO;
+import com.biblioteca.api.DTO.ListarMultasDTO;
+import com.biblioteca.api.entity.mongo.Livro;
 import com.biblioteca.api.entity.postgres.Emprestimo;
 import com.biblioteca.api.repository.postgres.EmprestimoRepository;
 import com.biblioteca.api.repository.postgres.MultaRepository;
@@ -23,8 +26,22 @@ public class MultaService {
 
     private static final BigDecimal VALOR_POR_DIA = new BigDecimal("2.50");
 
-    public List<Multa> listarTodas() {
-        return multaRepository.findAll();
+    public List<ListarMultasDTO> listarTodas() {
+        List<Multa> multas = multaRepository.findAll();
+
+        return multas.stream().map(e -> {
+
+            return new ListarMultasDTO(
+                    e.getIdMulta(),
+                    e.getValorTotal(),
+                    e.getDataMulta(),
+                    e.getDiasAtraso(),
+                    e.getPaga(),
+                    e.getDataPagamento(),
+                    e.getEmprestimo().getIdEmprestimo()
+            );
+
+        }).toList();
     }
 
     public Multa buscarPorId(Long id) {
@@ -71,7 +88,7 @@ public class MultaService {
     }
 
     @Transactional("transactionManager")
-    public Multa pagarMulta(Long idMulta) {
+    public ListarMultasDTO pagarMulta(Long idMulta) {
         Multa multa = buscarPorId(idMulta);
 
         if (Boolean.TRUE.equals(multa.getPaga())) {
@@ -81,7 +98,17 @@ public class MultaService {
         multa.setPaga(true);
         multa.setDataPagamento(LocalDate.now());
 
-        return multaRepository.save(multa);
+        ListarMultasDTO multaExibir = new ListarMultasDTO(
+                multa.getIdMulta(),
+                multa.getValorTotal(),
+                multa.getDataMulta(),
+                multa.getDiasAtraso(),
+                multa.getPaga(),
+                multa.getDataPagamento(),
+                multa.getEmprestimo().getIdEmprestimo()
+        );
+
+        return multaExibir;
     }
 
     public void deletar(Long id) {

@@ -81,17 +81,12 @@ public class EmprestimoController {
             @PathVariable Long id,
             @RequestBody AtualizarEmprestimoDTO dadosAtualizados
     ) {
-
         try {
-
             emprestimoService.atualizar(id, dadosAtualizados);
-
             return ResponseEntity.ok().body(Map.of("mensagem", "Empréstimo atualizado com sucesso"));
 
         } catch (Exception e) {
-
             return ResponseEntity.badRequest().body(e.getMessage());
-
         }
     }
 

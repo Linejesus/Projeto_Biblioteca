@@ -39,6 +39,7 @@ public class EmprestimoService {
     private final BibliotecaNodeRepository bibliotecaNodeRepository;
     private final LivroNodeRepository livroNodeRepository;
     private final PessoaRepository pessoaNodeRepository;
+    private final MultaService multaService;
 
 
     @Transactional("transactionManager")
@@ -159,6 +160,7 @@ public class EmprestimoService {
                     e.getBiblioteca().getNome(),
                     e.getDataEmprestimo(),
                     e.getDataDevolucaoPrevista(),
+                    e.getDataDevolucaoReal(),
                     e.getStatus()
             );
 
@@ -180,18 +182,20 @@ public class EmprestimoService {
                 .orElseThrow(() -> new RuntimeException("Biblioteca não encontrada"));
 
         emprestimo.setUsuario(usuario);
-
         emprestimo.setLivro(livro.getId());
-
         emprestimo.setBiblioteca(biblioteca);
-
         emprestimo.setDataEmprestimo(dadosAtualizados.getDataEmprestimo());
-
         emprestimo.setDataDevolucaoPrevista(
                 dadosAtualizados.getDataDevolucaoPrevista()
         );
-
+        emprestimo.setDataDevolucaoReal(
+                dadosAtualizados.getDataDevolucaoReal()
+        );
         emprestimo.setStatus(dadosAtualizados.getStatus());
+
+        if (emprestimo.getDataDevolucaoReal().isAfter(emprestimo.getDataDevolucaoPrevista())){
+            multaService.gerarMulta(emprestimo.getIdEmprestimo());
+        }
 
         emprestimoRepository.save(emprestimo);
     }

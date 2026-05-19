@@ -1,5 +1,6 @@
 package com.biblioteca.api.controllers.postgres;
 
+import com.biblioteca.api.DTO.ListarMultasDTO;
 import com.biblioteca.api.entity.postgres.Multa;
 import com.biblioteca.api.service.postgres.MultaService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class MultaController {
     private final MultaService multaService;
 
     @GetMapping
-    public ResponseEntity<List<Multa>> listarTodas() {
+    public ResponseEntity<List<ListarMultasDTO>> listarTodas() {
         return ResponseEntity.ok(multaService.listarTodas());
     }
 
@@ -38,8 +39,8 @@ public class MultaController {
     }
 
     @PutMapping("/pagar/{id}")
-    public ResponseEntity<Multa> pagarMulta(@PathVariable Long id) {
-        Multa multa = multaService.pagarMulta(id);
+    public ResponseEntity<ListarMultasDTO> pagarMulta(@PathVariable Long id) {
+        ListarMultasDTO multa = multaService.pagarMulta(id);
         return ResponseEntity.ok(multa);
     }
     @DeleteMapping("/{id}")

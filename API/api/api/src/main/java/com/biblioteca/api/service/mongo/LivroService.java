@@ -70,7 +70,6 @@ public class LivroService {
                 salvo.getId()
         );
 
-        // 5️⃣ 🔥 RELAÇÃO DE SEQUÊNCIA
         if (dto.getIdLivroAnterior() != null) {
 
             // valida se o livro anterior existe no Mongo
