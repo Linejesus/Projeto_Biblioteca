@@ -1,0 +1,321 @@
+<div class="page-container">
+
+  <!-- HEADER -->
+  <app-admin-header></app-admin-header>
+
+  <!-- CONTEÚDO -->
+  <main>
+
+    <div class="admin-page">
+
+      <!-- SIDEBAR -->
+      <app-admin-sidebar></app-admin-sidebar>
+
+      <!-- CONTEÚDO -->
+      <section class="content-container">
+
+        <!-- TOPO -->
+        <div class="content-header">
+
+          <h1>Lista de Empréstimos</h1>
+
+          <div class="search-box">
+
+            <span class="search-icon">⌕</span>
+
+            <input type="text" placeholder="Busque por título..." [(ngModel)]="termoBusca" (input)="filtrar()">
+
+          </div>
+
+        </div>
+
+        <!-- TABELA -->
+        <div class="table-container">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>Usuário</th>
+
+                <th>Livro</th>
+
+                <th>Biblioteca</th>
+
+                <th>Data Empréstimo</th>
+
+                <th>Data de Devolução Prevista</th>
+
+                <th>Data de Devolução</th>
+
+                <th>Status</th>
+
+                <th>Ações</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <tr *ngFor="let emprestimo of emprestimosPaginadas">
+
+                <td>
+                  {{ emprestimo.nomeUsuario }}
+                </td>
+
+                <td>
+                  {{ emprestimo.tituloLivro }}
+                </td>
+
+                <td>
+                  {{ emprestimo.nomeBiblioteca }}
+                </td>
+
+                <td>
+                  {{ emprestimo.dataEmprestimo }}
+                </td>
+
+                <td>
+                  {{ emprestimo.dataDevolucaoPrevista }}
+                </td>
+
+                <td>
+                  {{ emprestimo.dataDevolucaoReal }}
+                </td>
+
+                <td>
+                  {{ emprestimo.status }}
+                </td>
+
+                <td class="actions">
+
+                  <button (click)="abrirModalAlterar(emprestimo)" class="edit-btn">
+                    <img src="assets/alterar.png" alt="Caneta">
+                  </button>
+
+                  <button (click)="abrirModalDeletar(emprestimo)" class="delete-btn">
+                    <img src="assets/delete.png" alt="Lixo">
+                  </button>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+          <!-- PAGINAÇÃO -->
+          <div class="pagination" *ngIf="totalPaginas > 1">
+
+            <span
+              [class.disabled]="paginaAtual === 1"
+              (click)="irParaPagina(paginaAtual - 1)"
+            >
+              Anterior
+            </span>
+
+            <ng-container *ngFor="let pagina of paginas">
+              <span
+                [class.active]="pagina === paginaAtual"
+                (click)="irParaPagina(pagina)"
+              >
+                {{ pagina }}
+              </span>
+              <span *ngIf="pagina !== totalPaginas" class="separator">|</span>
+            </ng-container>
+
+            <span
+              [class.disabled]="paginaAtual === totalPaginas"
+              (click)="irParaPagina(paginaAtual + 1)"
+            >
+              Próxima
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- MODAL ALTERAR EMPRÉSTIMO -->
+      <div class="modal-overlay" *ngIf="modalAlterarAberto">
+
+        <div class="modal-container">
+
+          <!-- FECHAR -->
+          <button (click)="modalAlterarAberto = false" class="close-button">
+            X
+          </button>
+
+          <!-- HEADER -->
+          <div class="modal-header">
+
+            <h1>Alterar Dados do Empréstimo</h1>
+
+            <span class="emprestimo-id">
+              Empréstimo ID: {{ emprestimoSelecionado.idEmprestimo }}
+            </span>
+
+          </div>
+
+          <!-- FORM -->
+          <form class="form-container">
+
+            <div class="form-grid">
+
+              <!-- nomeUsuario -->
+              <div class="form-group">
+
+                <label>Nome do Usuário</label>
+                <input type="text" [(ngModel)]="emprestimoSelecionado.nomeUsuario" name="nomeUsuario" disabled>
+
+              </div>
+
+              <!-- tituloLivro -->
+              <div class="form-group">
+
+                <label>Título do Livro</label>
+                <input type="text" [(ngModel)]="emprestimoSelecionado.tituloLivro" name="tituloLivro" disabled>
+
+              </div>
+
+              <!-- nomeBiblioteca -->
+              <div class="form-group">
+
+                <label>Nome da Biblioteca</label>
+
+                <input type="text" [(ngModel)]="emprestimoSelecionado.nomeBiblioteca" name="nomeBiblioteca" disabled>
+
+              </div>
+
+              <!-- dataEmprestimo -->
+              <div class="form-group">
+
+                <label>Data do Empréstimo</label>
+                <input type="date" [(ngModel)]="emprestimoSelecionado.dataEmprestimo" name="dataEmprestimo" disabled>
+
+              </div>
+
+              <!-- dataDevolucaoPrevista -->
+              <div class="form-group">
+
+                <label>Data da Devolução Prevista</label>
+                <input type="date" [(ngModel)]="emprestimoSelecionado.dataDevolucaoPrevista" name="dataDevolucaoPrevista">
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Data da Devolução Real</label>
+                <input type="date" [(ngModel)]="emprestimoSelecionado.dataDevolucaoReal" name="dataDevolucaoReal">
+
+              </div>
+
+              <!-- status -->
+              <div class="form-group">
+
+                <label>Status</label>
+                <input type="text" [(ngModel)]="emprestimoSelecionado.status" name="status">
+
+              </div>
+
+            </div>
+
+            <!-- BOTÃO -->
+            <div class="modal-actions">
+
+              <button type="button" class="save-button" (click)="salvarAlteracoes()">
+                Salvar Alterações
+              </button>
+
+            </div>
+
+          </form>
+          
+        </div>
+
+      </div>
+
+
+      <!-- MODAL DELETAR EMPRÉSTIMO -->
+      <div class="modal-deletar-overlay" *ngIf="modalDeletarAberto">
+
+        <div class="modal-deletar-container">
+
+          <!-- FECHAR -->
+          <button (click)="modalDeletarAberto = false" class="modal-deletar-close-button">
+            X
+          </button>
+
+          <!-- HEADER -->
+          <div class="modal-deletar-header">
+
+            <h1>Deletar Empréstimo</h1>
+
+            <p>
+              Você está prestes a excluir permanentemente
+              o seguinte empréstimo:
+            </p>
+
+          </div>
+
+          <!-- INFORMAÇÕES -->
+          <div class="modal-deletar-user-info-container">
+
+            <div class="modal-deletar-info-box">
+              Usuário ID: {{ emprestimoSelecionado.idEmprestimo }}
+            </div>
+
+            <div class="modal-deletar-info-box">
+              Nome do Usuário: {{ emprestimoSelecionado.nomeUsuario }}
+            </div>
+
+            <div class="modal-deletar-info-box">
+              Título do Livro: {{ emprestimoSelecionado.tituloLivro }}
+            </div>
+
+            <div class="modal-deletar-info-box">
+              Nome da Biblioteca: {{ emprestimoSelecionado.nomeBiblioteca }}
+            </div>
+
+            <div class="modal-deletar-info-box">
+              Data do Empréstimo: {{ emprestimoSelecionado.dataEmprestimo }}
+            </div>
+
+            <div class="modal-deletar-info-box">
+              Data da Devolução Prevista: {{ emprestimoSelecionado.dataDevolucaoPrevista }}
+            </div>
+
+            <div class="modal-deletar-info-box">
+              Status: {{ emprestimoSelecionado.status }}
+            </div>
+
+          </div>
+
+          <!-- ALERTA -->
+          <p class="modal-deletar-warning-text">
+            Esta ação não poderá ser desfeita!
+          </p>
+
+          <!-- BOTÃO -->
+          <div class="modal-deletar-actions">
+
+            <button class="modal-deletar-confirm-button" (click)="deletarEmprestimo()">
+              Confirmar Exclusão
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+ </main>
+
+</div>

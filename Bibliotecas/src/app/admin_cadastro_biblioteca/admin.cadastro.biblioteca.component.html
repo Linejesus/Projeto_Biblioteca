@@ -1,0 +1,75 @@
+<div class="page-container">
+
+  <!-- HEADER -->
+  <app-admin-header></app-admin-header>
+
+  <!-- CONTEÚDO -->
+  <main class="content-container">
+
+    <!-- SIDEBAR -->
+    <app-admin-sidebar></app-admin-sidebar>
+
+    <!-- FORMULÁRIO -->
+    <section class="form-container">
+
+      <div class="form-header">
+
+        <h1>Cadastro de Nova Biblioteca</h1>
+
+        <p>
+          Preencha as informações da nova biblioteca
+        </p>
+
+      </div>
+
+      <form [formGroup]="cadastroForm" (ngSubmit)="cadastrar()">
+
+        <div class="input-group">
+          <label>Nome da Biblioteca *</label>
+          <input type="text" placeholder="" formControlName="nome">
+        </div>
+
+        <div class="input-group">
+          <label>Estado *</label>
+          <input type="text" placeholder="" formControlName="estado">
+        </div>
+
+        <div class="input-group">
+          <label>Cidade *</label>
+          <input type="text" placeholder="" formControlName="cidade">
+        </div>
+
+        <div class="input-group">
+          <label>Bairro *</label>
+          <input type="text" placeholder="" formControlName="bairro">
+        </div>
+
+        <div class="input-group">
+          <label>Rua *</label>
+          <input type="text" placeholder="" formControlName="rua">
+        </div>
+
+        <div class="input-group">
+          <label>Número *</label>
+          <input type="number" placeholder="" formControlName="numero">
+        </div>
+
+        <div class="buttons-container">
+
+          <button class="save-btn" type="submit">
+            Salvar Cadastro
+          </button>
+
+          <button class="cancel-btn" type="button">
+            Cancelar
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+  </main>
+
+</div>

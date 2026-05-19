@@ -1,0 +1,132 @@
+.page-container {
+  min-height: 100vh;
+  background-color: #c9af92;
+}
+
+.content-container {
+  display: flex;
+  gap: 20px;
+
+  padding: 30px 20px;
+}
+
+/* FORMULÁRIO */
+
+.form-container {
+  flex: 1;
+
+  background-color: #ffffff;
+  border-radius: 10px;
+
+  padding: 35px;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.form-header {
+  margin-bottom: 35px;
+}
+
+.form-header h1 {
+  font-size: 2.3rem;
+  color: #24543d;
+
+  margin-bottom: 8px;
+}
+
+.form-header p {
+  color: #333333;
+  font-size: 1.1rem;
+}
+
+/* FORM */
+
+form {
+  background-color: #f6efe6;
+
+  border-radius: 10px;
+
+  padding: 35px 30px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* INPUTS */
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+label {
+  font-size: 1rem;
+  color: #1f1f1f;
+  font-weight: 500;
+}
+
+input {
+  height: 45px;
+
+  border: none;
+  border-radius: 6px;
+
+  background-color: #c9af92;
+
+  padding: 0 15px;
+
+  font-size: 1rem;
+
+  outline: none;
+
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+input:focus {
+  border: 2px solid #24543d;
+}
+
+/* BOTÕES */
+
+.buttons-container {
+  display: flex;
+  gap: 20px;
+
+  margin-top: 10px;
+}
+
+button {
+  border: none;
+  border-radius: 6px;
+
+  padding: 12px 22px;
+
+  font-size: 1rem;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.save-btn {
+  background-color: #24543d;
+  color: white;
+}
+
+.save-btn:hover {
+  background-color: #1a3f2d;
+}
+
+.cancel-btn {
+  background-color: #c9af92;
+  color: #1f1f1f;
+}
+
+.cancel-btn:hover {
+  opacity: 0.9;
+}

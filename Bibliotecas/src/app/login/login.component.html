@@ -1,0 +1,43 @@
+<div class="page-container">
+  <main class="card-container">
+
+    <!-- Lado esquerdo -->
+    <section class="main-section">
+
+      <div class="logo">
+        <img src="assets/logo2.png" alt="Logo">
+      </div>
+
+      <h1>Seja bem vindo!</h1>
+
+      <p>
+        Realize seu <br>
+        cadastro agora <br>
+        mesmo.
+      </p>
+
+      <button routerLink="/cadastro">CADASTRAR</button>
+    </section>
+
+    <!-- Lado direito -->
+    <section class="form-section">
+
+      <div class="form-header">
+        <h2>Login</h2>
+        <span>Preencha o formulário</span>
+      </div>
+
+      <form (ngSubmit)="login()">
+
+        <input type="email" placeholder="Email" [(ngModel)]="email" name="email">
+
+        <input type="password" placeholder="Senha" [(ngModel)]="senha" name="senha">
+
+        <button type="submit">ENTRAR</button>
+
+      </form>
+
+    </section>
+
+  </main>
+</div>

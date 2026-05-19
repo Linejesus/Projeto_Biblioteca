@@ -1,0 +1,67 @@
+<div class="page-container">
+
+  <!-- HEADER -->
+  <app-admin-header></app-admin-header>
+
+  <!-- CONTEÚDO -->
+  <main class="content-container">
+
+    <!-- SIDEBAR -->
+    <app-admin-sidebar></app-admin-sidebar>
+
+    <!-- ÁREA PRINCIPAL -->
+    <section class="dashboard" *ngIf="dashboard">
+
+      <h1>Visão Geral</h1>
+
+      <div class="cards-container">
+
+        <!-- CARD RESUMO -->
+        <div class="dashboard-card">
+
+          <h2>Resumo</h2>
+
+          <div class="info-box">
+            <strong>{{ dashboard.totalLivros }}</strong> livros cadastrados
+          </div>
+
+          <div class="info-box">
+            <strong>{{ dashboard.totalUsuarios }}</strong> usuários cadastrados
+          </div>
+
+          <div class="info-box">
+            <strong>{{ dashboard.totalBibliotecas }}</strong> bibliotecas cadastradas
+          </div>
+
+          <div class="info-box">
+            <strong>{{ dashboard.totalEmprestimos }}</strong> empréstimos realizados
+          </div>
+
+        </div>
+
+        <!-- CARD MULTAS -->
+        <div class="dashboard-card">
+
+          <h2>Relatório de Multas</h2>
+
+          <div class="info-box">
+            Quantidade de usuários com multas: {{ dashboard.multasPendentes }}
+          </div>
+
+          <div class="info-box">
+            Maior tempo sem devolução: {{ dashboard.maiorTempoAtraso }} dias
+          </div>
+
+          <button>
+            Visualizar Lista Completa
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>

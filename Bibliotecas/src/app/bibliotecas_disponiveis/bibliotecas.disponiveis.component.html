@@ -1,0 +1,60 @@
+<div class="page-container">
+
+  <!-- HEADER -->
+  <app-header></app-header>
+
+  <!-- CONTEÚDO -->
+  <main class="content-container">
+
+    <div class="libraries-card">
+
+      <!-- TÍTULO -->
+      <h1>Bibliotecas Disponíveis:</h1>
+
+      <div class="libraries-content">
+
+        <!-- LISTA -->
+        <section class="libraries-list">
+
+          <div class="library-item" *ngFor="let biblioteca of bibliotecas">
+
+            <div class="icon">
+              <img src="/assets/icon_localizacao.png" alt="Localização">
+            </div>
+
+            <div class="library-info">
+
+              <h2>{{ biblioteca.nome }}</h2>
+
+              <p>
+                {{ biblioteca.rua }},
+                {{ biblioteca.numero }}
+                -
+                {{ biblioteca.bairro }}
+
+              </p>
+
+              <p>
+                {{ biblioteca.cidade }} - {{ biblioteca.estado }}
+              </p>
+
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- IMAGEM -->
+        <section class="illustration-section">
+
+          <img src="assets/reading.png" alt="Pessoa lendo">
+
+        </section>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>

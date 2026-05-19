@@ -1,0 +1,73 @@
+<div class="page-container">
+
+  <!-- HEADER -->
+  <app-header></app-header>
+
+  <!-- CONTEÚDO -->
+  <main class="content-container">
+
+    <!-- CARD PRINCIPAL -->
+    <section class="details-card">
+
+      <!-- CAPA -->
+      <div class="book-image">
+
+        <img [src]="livro?.capa" alt="Livro">
+
+      </div>
+
+      <!-- INFORMAÇÕES -->
+      <div class="book-details">
+
+        <h1>{{ livro?.titulo }}</h1>
+
+        <h2>{{ livro?.autores?.[0]?.nome }}</h2>
+
+        <p>Avaliação média: {{ livro?.avaliacaoMedia }}
+
+        <br><br>
+
+        Ano: {{ livro?.anoPublicacao }}
+
+        <br><br>
+
+        Páginas: {{ livro?.numeroPaginas }}
+
+        <br><br>
+
+        Idioma: {{ livro?.idioma }}
+      </p>
+
+        <button routerLink="/bibliotecas-disponiveis">Consultar bibliotecas disponíveis</button>
+
+      </div>
+
+    </section>
+
+    <!-- OUTROS LIVROS -->
+    <section class="author-books-section">
+
+      <h2>
+        Mais títulos desse autor:
+      </h2>
+
+      <!-- LISTA -->
+      <div class="books-list">
+
+        <div class="book-card" *ngFor="let livroAutor of livrosAutor" [routerLink]="['/livros-detalhes', livroAutor.id]">
+
+          <img [src]="livroAutor.capa" alt="Livro">
+
+          <h3>{{ livroAutor.titulo }}</h3>
+
+          <p>{{ livroAutor.autores[0]?.nome }}</p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>

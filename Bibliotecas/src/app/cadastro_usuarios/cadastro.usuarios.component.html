@@ -1,0 +1,51 @@
+<div class="page-container">
+  <main class="card-container">
+
+    <!-- Lado esquerdo -->
+    <section class="main-section">
+
+      <div class="logo">
+        <img src="assets/logo2.png" alt="Logo">
+      </div>
+
+      <h1>Seja bem vindo!</h1>
+
+      <p>
+        Acesse sua conta <br>
+        agora mesmo.
+      </p>
+      
+      <button routerLink="/login">ENTRAR</button>
+      
+    </section>
+
+    <!-- Lado direito -->
+    <section class="form-section">
+
+      <div class="form-header">
+        <h2>Crie sua conta</h2>
+        <span>Preencha o formulário</span>
+      </div>
+
+      <form [formGroup]="cadastroForm" (ngSubmit)="cadastrar()">
+        
+        <input type="text" placeholder="Nome Completo" formControlName="nome">
+        <div *ngIf="nomeInvalido">Campo obrigatório!</div>
+
+        <input type="text" placeholder="CPF" formControlName="cpf">
+        <div *ngIf="cpfInvalido">Campo obrigatório!</div>
+
+        <input type="email" placeholder="Email" formControlName="email">
+        <div *ngIf="emailInvalido">Campo obrigatório!</div>
+
+        <input type="password" placeholder="Senha" formControlName="senha">
+        <div *ngIf="senhaInvalida">Campo obrigatório!</div>
+
+        <button type="submit">CADASTRAR</button>
+
+      </form>
+
+    </section>
+
+  </main>
+</div>

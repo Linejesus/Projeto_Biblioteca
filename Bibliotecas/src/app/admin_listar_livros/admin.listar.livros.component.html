@@ -1,0 +1,164 @@
+<div class="page-container">
+
+  <app-admin-header></app-admin-header>
+
+  <main>
+    <div class="admin-page">
+
+      <app-admin-sidebar></app-admin-sidebar>
+
+      <section class="content-container">
+
+        <!-- TOPO -->
+        <div class="content-header">
+          <h1>Lista de Livros</h1>
+
+          <div class="search-box">
+            <span class="search-icon">⌕</span>
+            <input
+              type="text"
+              placeholder="Busque por título ou autor..."
+              [(ngModel)]="termoBusca"
+              (input)="filtrar()"
+            >
+          </div>
+        </div>
+
+        <!-- TABELA -->
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Capa</th>
+                <th>Título</th>
+                <th>Ano de Publicação</th>
+                <th>Autor</th>
+                <th>Gênero</th>
+                <th>Editora</th>
+                <th>Edição</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let livro of livrosPaginados">
+                <td>{{ livro.id }}</td>
+                <td>
+                  <img [src]="livro.capa" alt="Capa do livro" class="book-cover">
+                </td>
+                <td>{{ livro.titulo }}</td>
+                <td>{{ livro.anoPublicacao }}</td>
+                <td>{{ livro.autores?.[0]?.nome }}</td>
+                <td>{{ livro.generos?.[0] }}</td>
+                <td>{{ livro.editoras?.[0]?.nome }}</td>
+                <td>{{ livro.edicoes?.[0]?.edicao }}</td>
+                <td class="actions">
+                  <button (click)="abrirModalAlterar(livro)" class="edit-btn">
+                    <img src="assets/alterar.png" alt="Editar">
+                  </button>
+                  <button class="delete-btn">
+                    <img src="assets/delete.png" alt="Excluir">
+                  </button>
+                </td>
+              </tr>
+
+              <!-- Nenhum resultado -->
+              <tr *ngIf="livrosPaginados.length === 0">
+                <td colspan="8" class="empty-state">Nenhum livro encontrado.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- PAGINAÇÃO -->
+          <div class="pagination" *ngIf="totalPaginas > 1">
+
+            <span
+              [class.disabled]="paginaAtual === 1"
+              (click)="irParaPagina(paginaAtual - 1)"
+            >
+              Anterior
+            </span>
+
+            <ng-container *ngFor="let pagina of paginas">
+              <span
+                [class.active]="pagina === paginaAtual"
+                (click)="irParaPagina(pagina)"
+              >
+                {{ pagina }}
+              </span>
+              <span *ngIf="pagina !== totalPaginas" class="separator">|</span>
+            </ng-container>
+
+            <span
+              [class.disabled]="paginaAtual === totalPaginas"
+              (click)="irParaPagina(paginaAtual + 1)"
+            >
+              Próxima
+            </span>
+
+          </div>
+        </div>
+
+      </section>
+
+      <!-- MODAL ALTERAR -->
+      <div class="modal-overlay" *ngIf="modalAlterarAberto">
+        <div class="modal-container">
+
+          <button (click)="modalAlterarAberto = false" class="close-button">X</button>
+
+          <div class="modal-header">
+            <h1>Alterar Dados do Livro</h1>
+            <span class="book-id">Livro: {{ livroSelecionado.titulo }}</span>
+          </div>
+
+          <form class="form-container">
+            <div class="form-grid">
+
+              <div class="form-group">
+                <label>Título</label>
+                <input type="text" [(ngModel)]="livroSelecionado.titulo" name="titulo">
+              </div>
+
+              <div class="form-group">
+                <label>Ano de Publicação</label>
+                <input type="number" [(ngModel)]="livroSelecionado.anoPublicacao" name="anoPublicacao">
+              </div>
+
+              <div class="form-group">
+                <label>Autor</label>
+                <input type="text" [(ngModel)]="livroSelecionado.autores[0].nome" name="autor">
+              </div>
+
+              <div class="form-group">
+                <label>Gênero</label>
+                <input type="text" [(ngModel)]="livroSelecionado.generos[0]" name="genero">
+              </div>
+
+              <div class="form-group">
+                <label>Editora</label>
+                <input type="text" [(ngModel)]="livroSelecionado.editoras[0].nome" name="editora">
+              </div>
+
+              <div class="form-group">
+                <label>Edição</label>
+                <input type="number" [(ngModel)]="livroSelecionado.edicoes[0].edicao" name="edicao">
+              </div>
+
+            </div>
+
+            <div class="modal-actions">
+              <button type="button" (click)="salvarAlteracoes()" class="save-button">
+                Salvar Alterações
+              </button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+</div>
