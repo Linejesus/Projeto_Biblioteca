@@ -1,0 +1,288 @@
+<div class="page-container">
+
+  <!-- HEADER -->
+  <app-admin-header></app-admin-header>
+
+  <!-- CONTEÚDO -->
+  <main>
+
+    <div class="admin-page">
+
+      <!-- SIDEBAR -->
+      <app-admin-sidebar></app-admin-sidebar>
+
+      <!-- CONTEÚDO -->
+      <section class="content-container">
+
+        <!-- TOPO -->
+        <div class="content-header">
+
+          <h1>Lista de Bibliotecas</h1>
+
+          <div class="search-box">
+
+            <span class="search-icon">⌕</span>
+
+            <input type="text" placeholder="Busque por nome ou cidade..." [(ngModel)]="termoBusca" (input)="filtrar()">
+
+          </div>
+
+        </div>
+
+        <!-- TABELA -->
+        <div class="table-container">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>ID</th>
+                <th>Nome da Biblioteca</th>
+                <th>Estado</th>
+                <th>Cidade</th>
+                <th>Bairro</th>
+                <th>Rua</th>
+                <th>Número</th>
+                <th>Ações</th>
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <tr *ngFor="let biblioteca of bibliotecasPaginadas">
+
+                <td>{{ biblioteca.idBiblioteca }}</td>
+
+                <td>{{ biblioteca.nome }}</td>
+
+                <td>{{ biblioteca.estado }}</td>
+
+                <td>{{ biblioteca.cidade }}</td>
+
+                <td>{{ biblioteca.bairro }}</td>
+
+                <td>{{ biblioteca.rua }}</td>
+
+                <td>{{ biblioteca.numero }}</td>
+
+                <td class="actions">
+
+                  <button (click)="abrirModalAlterar(biblioteca)" class="edit-btn">
+                    <img src="assets/alterar.png" alt="Caneta">
+                  </button>
+
+                  <button (click)="abrirModalDeletar(biblioteca)" class="delete-btn">
+                    <img src="assets/delete.png" alt="Lixo">
+                  </button>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+          <!-- PAGINAÇÃO -->
+          <div class="pagination" *ngIf="totalPaginas > 1">
+
+            <span
+              [class.disabled]="paginaAtual === 1"
+              (click)="irParaPagina(paginaAtual - 1)"
+            >
+              Anterior
+            </span>
+
+            <ng-container *ngFor="let pagina of paginas">
+              <span
+                [class.active]="pagina === paginaAtual"
+                (click)="irParaPagina(pagina)"
+              >
+                {{ pagina }}
+              </span>
+              <span *ngIf="pagina !== totalPaginas" class="separator">|</span>
+            </ng-container>
+
+            <span
+              [class.disabled]="paginaAtual === totalPaginas"
+              (click)="irParaPagina(paginaAtual + 1)"
+            >
+              Próxima
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- MODAL ALTERAR BIBLIOTECA -->
+      <div class="modal-overlay" *ngIf="modalAlterarAberto">
+
+        <div class="modal-container">
+
+          <!-- FECHAR -->
+          <button (click)="modalAlterarAberto = false" class="close-button">
+            X
+          </button>
+
+          <!-- HEADER -->
+          <div class="modal-header">
+
+            <h1>Alterar Dados da Biblioteca</h1>
+
+            <span class="biblioteca-id">
+              Biblioteca ID: {{ bibliotecaSelecionada.idBiblioteca }}
+            </span>
+
+          </div>
+
+          <!-- FORM -->
+          <form class="form-container">
+
+            <div class="form-grid">
+
+              <!-- NOME -->
+              <div class="form-group">
+
+                <label>Nome da Biblioteca</label>
+                <input type="text" [(ngModel)]="bibliotecaSelecionada.nome" name="nome">
+
+              </div>
+
+              <!-- Estado -->
+              <div class="form-group">
+
+                <label>Estado</label>
+                <input type="text" [(ngModel)]="bibliotecaSelecionada.estado" name="estado">
+
+              </div>
+
+              <!-- Cidade -->
+              <div class="form-group">
+
+                <label>Cidade</label>
+
+                <input type="text" [(ngModel)]="bibliotecaSelecionada.cidade" name="cidade">
+
+              </div>
+
+              <!-- Bairro -->
+              <div class="form-group">
+
+                <label>Bairro</label>
+                <input type="text" [(ngModel)]="bibliotecaSelecionada.bairro" name="bairro">
+
+              </div>
+
+              <!-- Rua -->
+              <div class="form-group">
+
+                <label>Rua</label>
+                <input type="text" [(ngModel)]="bibliotecaSelecionada.rua" name="rua">
+
+              </div>
+
+              <!-- Número -->
+              <div class="form-group">
+
+                <label>Número</label>
+                <input type="number" [(ngModel)]="bibliotecaSelecionada.numero" name="numero">
+
+              </div>
+
+            </div>
+
+            <!-- BOTÃO -->
+            <div class="modal-actions">
+
+              <button type="button" class="save-button" (click)="salvarAlteracoes()">
+                Salvar Alterações
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+
+      <!-- MODAL DELETAR BIBLIOTECA -->
+      <div class="modal-deletar-overlay" *ngIf="modalDeletarAberto">
+
+        <div class="modal-deletar-container">
+
+          <!-- FECHAR -->
+          <button (click)="modalDeletarAberto = false" class="modal-deletar-close-button">
+            X
+          </button>
+
+          <!-- HEADER -->
+          <div class="modal-deletar-header">
+
+            <h1>Deletar Biblioteca</h1>
+
+            <p>
+              Você está prestes a excluir permanentemente
+              a seguinte biblioteca:
+            </p>
+
+          </div>
+
+          <!-- INFORMAÇÕES -->
+          <div class="modal-deletar-user-info-container">
+
+            <div class="modal-deletar-info-box">
+              Usuário ID: {{ bibliotecaSelecionada.idBiblioteca }}
+            </div>
+
+            <div class="modal-deletar-info-box">
+              Estado: {{ bibliotecaSelecionada.estado }}
+            </div>
+
+            <div class="modal-deletar-info-box">
+              Cidade: {{ bibliotecaSelecionada.cidade }}
+            </div>
+
+            <div class="modal-deletar-info-box">
+              Bairro: {{ bibliotecaSelecionada.bairro }}
+            </div>
+
+            <div class="modal-deletar-info-box">
+              Rua: {{ bibliotecaSelecionada.rua }}
+            </div>
+
+            <div class="modal-deletar-info-box">
+              Número: {{ bibliotecaSelecionada.numero }}
+            </div>
+
+          </div>
+
+          <!-- ALERTA -->
+          <p class="modal-deletar-warning-text">
+            Esta ação não poderá ser desfeita!
+          </p>
+
+          <!-- BOTÃO -->
+          <div class="modal-deletar-actions">
+
+            <button class="modal-deletar-confirm-button" (click)="deletarBiblioteca()">
+              Confirmar Exclusão
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+ </main>
+
+</div>

@@ -1,0 +1,94 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.header-container {
+  width: 100%;
+  height: 80px;
+
+  background-color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 60px;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* LOGO */
+
+.logo {
+  width: 110px;
+  height: 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100px;
+  }
+}
+
+/* PESQUISA */
+
+.search-box {
+  width: 500px;
+  height: 42px;
+
+  background-color: #f4f4f4;
+
+  border: 2px solid #dddddd;
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 15px;
+}
+
+.search-icon {
+  font-size: 20px;
+  color: #9a9a9a;
+
+  margin-right: 10px;
+}
+
+.search-box input {
+  width: 100%;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  font-size: 16px;
+  color: #333;
+}
+
+.search-box input::placeholder {
+  color: #b1b1b1;
+}
+
+/* PERFIL */
+
+.profile {
+  width: 60px;
+  height: 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  cursor: pointer;
+
+  img {
+    width: 60px;
+  }
+}

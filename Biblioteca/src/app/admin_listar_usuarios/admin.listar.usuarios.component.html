@@ -1,0 +1,255 @@
+<div class="page-container">
+
+  <!-- HEADER -->
+  <app-admin-header></app-admin-header>
+
+  <!-- CONTEÚDO -->
+  <main>
+
+    <div class="admin-page">
+
+      <!-- SIDEBAR -->
+      <app-admin-sidebar></app-admin-sidebar>
+
+      <!-- CONTEÚDO -->
+      <section class="content-container">
+
+        <!-- TOPO -->
+        <div class="content-header">
+
+          <h1>Lista de Usuários</h1>
+
+          <div class="search-box">
+
+            <span class="search-icon">⌕</span>
+
+            <input type="text" placeholder="Busque por nome ou CPF..." [(ngModel)]="termoBusca" (input)="filtrar()">
+
+          </div>
+
+        </div>
+
+        <!-- TABELA -->
+        <div class="table-container">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>ID</th>
+                <th>Nome Completo</th>
+                <th>CPF</th>
+                <th>Email</th>
+                <th>Ações</th>
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <tr *ngFor="let usuario of usuariosPaginados">
+
+                <td>{{ usuario.idUsuario }}</td>
+
+                <td>{{ usuario.nome }}</td>
+
+                <td>{{ usuario.cpf }}</td>
+
+                <td>{{ usuario.email }}</td>
+
+                <td class="actions">
+
+                  <button (click)="abrirModalAlterar(usuario)" class="edit-btn">
+                    <img src="assets/alterar.png" alt="Caneta">
+                  </button>
+
+                  <button (click)="abrirModalDeletar(usuario)" class="delete-btn">
+                    <img src="assets/delete.png" alt="Lixo">
+                  </button>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+          <!-- PAGINAÇÃO -->
+          <div class="pagination" *ngIf="totalPaginas > 1">
+
+            <span
+              [class.disabled]="paginaAtual === 1"
+              (click)="irParaPagina(paginaAtual - 1)"
+            >
+              Anterior
+            </span>
+
+            <ng-container *ngFor="let pagina of paginas">
+              <span
+                [class.active]="pagina === paginaAtual"
+                (click)="irParaPagina(pagina)"
+              >
+                {{ pagina }}
+              </span>
+              <span *ngIf="pagina !== totalPaginas" class="separator">|</span>
+            </ng-container>
+
+            <span
+              [class.disabled]="paginaAtual === totalPaginas"
+              (click)="irParaPagina(paginaAtual + 1)"
+            >
+              Próxima
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- MODAL ALTERAR USUÁRIO -->
+      <div class="modal-overlay" *ngIf="modalAlterarAberto">
+
+        <div class="modal-container">
+
+          <!-- FECHAR -->
+          <button (click)="modalAlterarAberto = false" class="close-button">
+            X
+          </button>
+
+          <!-- HEADER -->
+          <div class="modal-header">
+
+            <h1>Alterar Dados do Usuário</h1>
+
+            <span class="user-id">
+              Usuário ID: {{ usuarioSelecionado.idUsuario }}
+            </span>
+
+          </div>
+
+          <!-- FORM -->
+          <form class="form-container">
+
+            <div class="form-grid">
+
+              <!-- NOME -->
+              <div class="form-group">
+
+                <label>Nome Completo</label>
+                <input type="text" [(ngModel)]="usuarioSelecionado.nome" name="nome">
+
+              </div>
+
+              <!-- CPF -->
+              <div class="form-group">
+
+                <label>CPF</label>
+                <input type="text" [(ngModel)]="usuarioSelecionado.cpf" name="cpf" disabled>
+
+              </div>
+
+              <!-- EMAIL -->
+              <div class="form-group">
+
+                <label>Email</label>
+
+                <input type="email" [(ngModel)]="usuarioSelecionado.email" name="email">
+
+              </div>
+
+              <!-- SENHA -->
+              <div class="form-group">
+
+                <label>Senha</label>
+                <input type="password" [(ngModel)]="usuarioSelecionado.senha" name="senha">
+
+              </div>
+
+            </div>
+
+            <!-- BOTÃO -->
+            <div class="modal-actions">
+
+              <button type="button" class="save-button" (click)="salvarAlteracoes()">
+                Salvar Alterações
+              </button>
+
+            </div>
+
+          </form>
+          
+        </div>
+
+      </div>
+
+
+      <!-- MODAL DELETAR USUÁRIO -->
+      <div class="modal-deletar-overlay" *ngIf="modalDeletarAberto">
+
+        <div class="modal-deletar-container">
+
+          <!-- FECHAR -->
+          <button (click)="modalDeletarAberto = false" class="modal-deletar-close-button">
+            X
+          </button>
+
+          <!-- HEADER -->
+          <div class="modal-deletar-header">
+
+            <h1>Deletar Usuário</h1>
+
+            <p>
+              Você está prestes a excluir permanentemente
+              o seguinte usuário:
+            </p>
+
+          </div>
+
+          <!-- INFORMAÇÕES -->
+          <div class="modal-deletar-user-info-container">
+
+            <div class="modal-deletar-info-box">
+              Usuário ID: {{ usuarioSelecionado.idUsuario }}
+            </div>
+
+            <div class="modal-deletar-info-box">
+              Nome Completo: {{ usuarioSelecionado.nome }}
+            </div>
+
+            <div class="modal-deletar-info-box">
+              CPF: {{ usuarioSelecionado.cpf }}
+            </div>
+
+            <div class="modal-deletar-info-box">
+              Email: {{ usuarioSelecionado.email }}
+            </div>
+
+          </div>
+
+          <!-- ALERTA -->
+          <p class="modal-deletar-warning-text">
+            Esta ação não poderá ser desfeita!
+          </p>
+
+          <!-- BOTÃO -->
+          <div class="modal-deletar-actions">
+
+          <button class="modal-deletar-confirm-button" (click)="deletarUsuario()">
+            Confirmar Exclusão
+          </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+ </main>
+
+</div>

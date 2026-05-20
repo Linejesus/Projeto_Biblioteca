@@ -1,0 +1,317 @@
+<div class="page-container">
+
+  <!-- HEADER -->
+  <app-admin-header></app-admin-header>
+
+  <!-- CONTEÚDO -->
+  <main class="content-container">
+
+    <!-- SIDEBAR -->
+    <app-admin-sidebar></app-admin-sidebar>
+
+    <!-- FORMULÁRIO -->
+    <section class="form-container">
+
+      <div class="form-header">
+
+        <h1>Cadastro de Novo Livro</h1>
+
+        <p>
+          Preencha as informações do novo livro
+        </p>
+
+      </div>
+
+      <form (ngSubmit)="salvarLivro()">
+
+        <div class="input-group">
+
+          <label>Capa do Livro *</label>
+
+          <img
+            *ngIf="livro.capa"
+            [src]="livro.capa"
+            class="preview-capa"
+          >
+
+          <input
+            type="file"
+            accept="image/*"
+            (change)="onFileSelected($event)"
+          >
+
+        </div>
+
+        <!-- TÍTULO -->
+        <div class="input-group">
+
+          <label>Título *</label>
+
+          <input
+            type="text"
+            [(ngModel)]="livro.titulo"
+            name="titulo"
+            required
+          >
+
+        </div>
+
+        <!-- ANO PUBLICAÇÃO -->
+        <div class="input-group">
+
+          <label>Ano de Publicação *</label>
+
+          <input
+            type="number"
+            [(ngModel)]="livro.anoPublicacao"
+            name="anoPublicacao"
+            required
+          >
+
+        </div>
+
+        <!-- =========================
+            AUTORES
+        ========================== -->
+
+        <div class="section-title">
+          Autores
+        </div>
+
+        <div
+          class="dynamic-block"
+          *ngFor="let autor of livro.autores; let i = index"
+        >
+
+          <div class="input-group">
+
+            <label>Nome do Autor *</label>
+
+            <input
+              type="text"
+              [(ngModel)]="autor.nome"
+              name="autorNome{{i}}"
+              required
+            >
+
+          </div><br>
+
+          <div class="input-group">
+
+            <label>Nacionalidade</label>
+
+            <input
+              type="text"
+              [(ngModel)]="autor.nacionalidade"
+              name="autorNacionalidade{{i}}"
+            >
+
+          </div>
+
+          <button
+            type="button"
+            class="remove-btn"
+            (click)="removerAutor(i)"
+            *ngIf="livro.autores.length > 1"
+          >
+            Remover Autor
+          </button>
+
+        </div>
+
+        <button type="button" class="add-btn" (click)="adicionarAutor()">
+          + Adicionar Autor
+        </button>
+
+        <!-- =========================
+            EDITORAS
+        ========================== -->
+
+        <div class="section-title">
+          Editoras
+        </div>
+
+        <div
+          class="dynamic-block"
+          *ngFor="let editora of livro.editoras; let i = index"
+        >
+
+          <div class="input-group">
+
+            <label>Nome da Editora *</label>
+
+            <input
+              type="text"
+              [(ngModel)]="editora.nome"
+              name="editoraNome{{i}}"
+            >
+
+          </div><br>
+
+          <div class="input-group">
+
+            <label>País</label>
+
+            <input
+              type="text"
+              [(ngModel)]="editora.pais"
+              name="editoraPais{{i}}"
+            >
+
+          </div>
+
+          <button
+            type="button"
+            class="remove-btn"
+            (click)="removerEditora(i)"
+            *ngIf="livro.editoras.length > 1"
+          >
+            Remover Editora
+          </button>
+
+        </div>
+
+        <button type="button" class="add-btn" (click)="adicionarEditora()">
+          + Adicionar Editora
+        </button>
+
+        <!-- =========================
+            EDIÇÕES
+        ========================== -->
+
+        <div class="section-title">
+          Edições
+        </div>
+
+        <div
+          class="dynamic-block"
+          *ngFor="let edicao of livro.edicoes; let i = index"
+        >
+
+          <div class="input-group">
+
+            <label>Edição *</label>
+
+            <input
+              type="number"
+              [(ngModel)]="edicao.edicao"
+              name="edicaoNumero{{i}}"
+            >
+
+          </div><br>
+
+          <div class="input-group">
+
+            <label>Ano da Edição</label>
+
+            <input
+              type="number"
+              [(ngModel)]="edicao.ano"
+              name="edicaoAno{{i}}"
+            >
+
+          </div>
+
+          <button
+            type="button"
+            class="remove-btn"
+            (click)="removerEdicao(i)"
+            *ngIf="livro.edicoes.length > 1"
+          >
+            Remover Edição
+          </button>
+
+        </div>
+
+        <button type="button" class="add-btn" (click)="adicionarEdicao()">
+          + Adicionar Edição
+        </button>
+
+        
+        <!-- =========================
+            GÊNEROS
+        ========================== -->
+
+        <div class="input-group">
+
+          <label>Gêneros *</label>
+
+          <input
+            type="text"
+            [(ngModel)]="livro.generos"
+            name="generos"
+            placeholder="Ex: Aventura, Ação, Infantil"
+          >
+
+        </div>
+
+        <!-- TAGS -->
+        <div class="input-group">
+
+          <label>Tags</label>
+
+          <input
+            type="text"
+            [(ngModel)]="livro.tags"
+            name="tags"
+            placeholder="Ex: Fantasia, Magia, Medieval"
+          >
+
+        </div>
+
+        <!-- IDIOMA -->
+        <div class="input-group">
+
+          <label>Idioma</label>
+
+          <input
+            type="text"
+            [(ngModel)]="livro.idioma"
+            name="idioma"
+          >
+
+        </div>
+
+        <!-- AVALIAÇÃO -->
+        <div class="input-group">
+
+          <label>Avaliação Média</label>
+
+          <input
+            type="number"
+            step="0.1"
+            [(ngModel)]="livro.avaliacaoMedia"
+            name="avaliacaoMedia"
+          >
+
+        </div>
+
+        <!-- PÁGINAS -->
+        <div class="input-group">
+
+          <label>Número de Páginas</label>
+
+          <input
+            type="number"
+            [(ngModel)]="livro.numeroPaginas"
+            name="numeroPaginas"
+          >
+
+        </div>
+
+        <!-- BOTÕES -->
+        <div class="buttons-container">
+
+          <button class="save-btn" type="submit">
+            Salvar Cadastro
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+  </main>
+
+</div>

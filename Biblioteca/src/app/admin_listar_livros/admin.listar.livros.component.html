@@ -1,0 +1,294 @@
+<div class="page-container">
+
+  <!-- HEADER -->
+  <app-admin-header></app-admin-header>
+
+  <!-- CONTEÚDO -->
+  <main>
+
+    <div class="admin-page">
+
+      <!-- SIDEBAR -->
+      <app-admin-sidebar></app-admin-sidebar>
+
+      <!-- CONTEÚDO -->
+      <section class="content-container">
+
+        <!-- TOPO -->
+        <div class="content-header">
+
+          <h1>Lista de Livros</h1>
+
+          <div class="search-box">
+
+            <span class="search-icon">⌕</span>
+
+            <input
+              type="text"
+              placeholder="Busque por título ou autor..."
+              [(ngModel)]="termoBusca"
+              (input)="filtrar()"
+            >
+
+          </div>
+
+        </div>
+
+        <!-- TABELA -->
+        <div class="table-container">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>ID</th>
+                <th>Capa</th>
+                <th>Título</th>
+                <th>Ano de Publicação</th>
+                <th>Autor</th>
+                <th>Gênero</th>
+                <th>Editora</th>
+                <th>Edição</th>
+                <th>Ações</th>
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <tr *ngFor="let livro of livrosPaginados">
+                <td>{{ livro.id }}</td>
+
+                <td>
+                  <img [src]="livro.capa" alt="Capa do livro" class="book-cover">
+                </td>
+
+                <td>{{ livro.titulo }}</td>
+
+                <td>{{ livro.anoPublicacao }}</td>
+
+                <td>{{ livro.autores[0]?.nome }}</td>
+
+                <td>{{ livro.generos[0] }}</td>
+
+                <td>{{ livro.editoras[0]?.nome }}</td>
+
+                <td>{{ livro.edicoes[0]?.edicao }}</td>
+
+                <td class="actions">
+
+                  <button (click)="abrirModalAlterar(livro)" class="edit-btn">
+                    <img src="assets/alterar.png" alt="Caneta">
+                  </button>
+
+                  <button (click)="abrirModalDeletar(livro)" class="delete-btn">
+                    <img src="assets/delete.png" alt="Lixo">
+                  </button>
+
+                </td>
+
+              </tr>
+
+              <!-- Nenhum resultado -->
+              <tr *ngIf="livrosPaginados.length === 0">
+                <td colspan="8" class="empty-state">Nenhum livro encontrado.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- PAGINAÇÃO -->
+          <div class="pagination" *ngIf="totalPaginas > 1">
+
+            <span
+              [class.disabled]="paginaAtual === 1"
+              (click)="irParaPagina(paginaAtual - 1)"
+            >
+              Anterior
+            </span>
+
+            <ng-container *ngFor="let pagina of paginas">
+              <span
+                [class.active]="pagina === paginaAtual"
+                (click)="irParaPagina(pagina)"
+              >
+                {{ pagina }}
+              </span>
+              <span *ngIf="pagina !== totalPaginas" class="separator">|</span>
+            </ng-container>
+
+            <span
+              [class.disabled]="paginaAtual === totalPaginas"
+              (click)="irParaPagina(paginaAtual + 1)"
+            >
+              Próxima
+            </span>
+
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- MODAL ALTERAR USUÁRIO -->
+      <div class="modal-overlay" *ngIf="modalAlterarAberto">
+
+        <div class="modal-container">
+
+          <!-- FECHAR -->
+          <button (click)="modalAlterarAberto = false" class="close-button">
+            X
+          </button>
+
+          <!-- HEADER -->
+          <div class="modal-header">
+
+            <h1>Alterar Dados do Livro</h1>
+
+            <span class="book-id">
+              Livro ID: {{ livroSelecionado.id }}
+            </span>
+
+          </div>
+
+          <!-- FORM -->
+          <form class="form-container">
+
+            <div class="form-grid">
+
+              <!-- Título -->
+              <div class="form-group">
+
+                <label>Título</label>
+                <input type="text" [(ngModel)]="livroSelecionado.titulo" name="titulo" disabled>
+
+              </div>
+
+              <!-- Ano de Publicacao -->
+              <div class="form-group">
+
+                <label>Ano de Publicação</label>
+                <input type="number" [(ngModel)]="livroSelecionado.anoPublicacao" name="anoPublicacao">
+
+              </div>
+
+              <!-- Autor -->
+              <div class="form-group">
+
+                <label>Autor</label>
+
+                <input type="text" [(ngModel)]="livroSelecionado.autores[0].nome" name="autor">
+
+              </div>
+
+              <!-- Gênero -->
+              <div class="form-group">
+
+                <label>Gênero</label>
+                <input type="text" [(ngModel)]="livroSelecionado.generos[0]" name="genero">
+
+              </div>
+
+              <!-- Editora -->
+              <div class="form-group">
+
+                <label>Editora</label>
+                <input type="text" [(ngModel)]="livroSelecionado.editoras[0].nome" name="editora">
+
+              </div>
+
+              <!-- Edição -->
+              <div class="form-group">
+
+                <label>Edição</label>
+                <input type="number" [(ngModel)]="livroSelecionado.edicoes[0].edicao" name="edicao">
+
+              </div>
+
+            </div>
+
+            <!-- BOTÃO -->
+            <div class="modal-actions">
+
+              <button (click)="alterarLivro()" type="button" class="save-button">
+                Salvar Alterações
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+      <!-- MODAL DELETAR LIVRO -->
+      <div class="modal-deletar-overlay" *ngIf="modalDeletarAberto">
+
+        <div class="modal-deletar-container">
+
+          <!-- FECHAR -->
+          <button (click)="modalDeletarAberto = false" class="modal-deletar-close-button">
+            X
+          </button>
+
+          <!-- HEADER -->
+          <div class="modal-deletar-header">
+
+            <h1>Deletar Livro</h1>
+
+            <p>
+              Você está prestes a excluir permanentemente
+              o seguinte livro:
+            </p>
+
+          </div>
+
+          <!-- INFORMAÇÕES -->
+          <div class="modal-deletar-user-info-container">
+
+            <div class="modal-deletar-info-box">
+              Livro ID: {{ livroSelecionado.id }}
+            </div>
+
+            <div class="modal-deletar-info-box">
+              Título: {{ livroSelecionado.titulo }}
+            </div>
+
+            <div class="modal-deletar-info-box">
+              Autor: {{ livroSelecionado.autores[0].nome }}
+            </div>
+
+            <div class="modal-deletar-info-box">
+              Ano de Publicação: {{ livroSelecionado.anoPublicacao }}
+            </div>
+
+            <div class="modal-deletar-info-box">
+              Gênero: {{ livroSelecionado.generos[0] }}
+            </div>
+
+          </div>
+
+          <!-- ALERTA -->
+          <p class="modal-deletar-warning-text">
+            Esta ação não poderá ser desfeita!
+          </p>
+
+          <!-- BOTÃO -->
+          <div class="modal-deletar-actions">
+
+          <button class="modal-deletar-confirm-button" (click)="deletarLivro(livroSelecionado.id)">
+            Confirmar Exclusão
+          </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+ </main>
+
+</div>

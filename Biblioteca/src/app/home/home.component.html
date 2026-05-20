@@ -1,0 +1,102 @@
+<div class="page-container">
+
+  <!-- HEADER -->
+  <app-header></app-header>
+
+  <!-- CONTEÚDO -->
+  <main class="content-container">
+
+    <!-- SEÇÃO -->
+    <section
+      class="books-section"
+      *ngIf="livrosRecomendados.length > 0"
+    >
+
+      <div class="section-header">
+        <h2>Recomendados para você:</h2>
+      </div>
+
+      <!-- LISTA -->
+      <div class="books-list">
+
+        <div
+          class="book-card"
+          *ngFor="let livro of livrosRecomendados"
+          [routerLink]="['/livros-detalhes', livro.id]"
+        >
+
+          <img [src]="livro.capa" alt="Livro">
+
+          <h3>
+            {{ livro.titulo }}
+          </h3>
+
+          <p>
+            {{ livro.autores[0].nome }}
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- SEÇÃO -->
+    <section class="books-section">
+
+      <div class="section-header">
+        <h2>Melhor Avaliados:</h2>
+      </div>
+
+      <!-- LISTA -->
+      <div class="books-list">
+
+        <div class="book-card" *ngFor="let livro of melhoresAvaliados" [routerLink]="['/livros-detalhes', livro.id]">
+
+          <img [src]="livro.capa" alt="Livro">
+
+          <h3>
+            {{ livro.titulo }}
+          </h3>
+
+          <p>
+            {{ livro.autores[0].nome }}
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- SEÇÃO -->
+    <section class="books-section">
+
+      <div class="section-header">
+        <h2>Livros Disponíveis:</h2>
+      </div>
+
+      <!-- LISTA -->
+      <div class="books-list">
+
+        <div class="book-card" *ngFor="let livro of livrosHome" [routerLink]="['/livros-detalhes', livro.id]">
+
+          <img [src]="livro.capa" alt="Livro">
+
+          <h3>
+            {{ livro.titulo }}
+          </h3>
+
+          <p>
+            {{ livro.autores[0].nome }}
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>

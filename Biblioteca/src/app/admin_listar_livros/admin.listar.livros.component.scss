@@ -1,0 +1,521 @@
+.page-container {
+  min-height: 100vh;
+  background-color: #c9af92;
+}
+
+
+
+.admin-page {
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+  background-color: #c7ae92;
+  min-height: calc(100vh - 90px);
+  box-sizing: border-box;
+}
+
+.content-container {
+  flex: 1;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 32px 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+
+  h1 {
+    font-size: 2rem;
+    color: #23553d;
+    font-weight: 700;
+  }
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  background: #f7f4ef;
+  border: 2px solid #d8d2cb;
+  border-radius: 8px;
+
+  padding: 10px 14px;
+  width: 320px;
+
+  span {
+    color: #c4b8aa;
+    font-size: 22px;
+  }
+
+  input {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+
+    font-size: 1rem;
+    color: #333;
+  }
+
+  input::placeholder {
+    color: #c4b8aa;
+  }
+}
+
+.table-container {
+  width: 100%;
+  overflow: hidden;
+
+  border-radius: 8px;
+  background: #f5eee5;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: #23553d;
+  color: white;
+
+  th {
+    padding: 18px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+}
+
+tbody {
+
+  tr {
+    border-bottom: 1px solid #ccb396;
+  }
+
+  td {
+    padding: 12px;
+    text-align: center;
+    font-size: 1rem;
+    color: #2f2f2f;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.edit-btn,
+.delete-btn {
+  border: none;
+  width: 36px;
+  height: 36px;
+
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+
+  span {
+    font-size: 20px;
+  }
+}
+
+.edit-btn {
+  background-color: #c9b08d;
+  color: #3c2f24;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.delete-btn {
+  background-color: #9b5d52;
+  color: white;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+
+  padding: 20px;
+
+  font-size: 1rem;
+  color: #2f2f2f;
+
+  .next {
+    font-weight: 600;
+    cursor: pointer;
+  }
+}
+
+.book-cover {
+  width: 60px;
+  height: 90px;
+
+  object-fit: cover;
+
+  border-radius: 6px;
+
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+
+/* =========================================
+   MODAL ALTERAR LIVRO
+========================================= */
+
+.modal-overlay {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100vh;
+
+  background: rgba(0, 0, 0, 0.35);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 999;
+}
+
+/* MODAL */
+.modal-container {
+  width: 90%;
+  max-width: 760px;
+
+  background: #f3ece3;
+
+  border-radius: 6px;
+
+  padding: 36px 40px;
+
+  position: relative;
+
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+}
+
+/* FECHAR */
+.close-button {
+  position: absolute;
+
+  top: 20px;
+  right: 24px;
+
+  border: none;
+  background: transparent;
+
+  font-size: 28px;
+  cursor: pointer;
+
+  color: #000;
+}
+
+/* HEADER */
+.modal-header {
+  margin-bottom: 36px;
+
+  h1 {
+    font-size: 34px;
+    font-weight: 700;
+
+    color: #111;
+
+    margin-bottom: 6px;
+  }
+
+  .book-id {
+    font-size: 22px;
+    color: #222;
+  }
+}
+
+/* FORM */
+.form-container {
+  width: 100%;
+}
+
+/* GRID */
+.form-grid {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 28px 60px;
+}
+
+/* CAMPOS */
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-size: 16px;
+    font-weight: 500;
+
+    margin-bottom: 10px;
+
+    color: #111;
+  }
+
+  input {
+    height: 42px;
+
+    border: none;
+    border-radius: 5px;
+
+    background: #c9af91;
+
+    padding: 0 18px;
+
+    font-size: 18px;
+
+    color: #111;
+
+    outline: none;
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* BOTÃO */
+.modal-actions {
+  width: 100%;
+
+  display: flex;
+  justify-content: flex-end;
+
+  margin-top: 40px;
+}
+
+.save-button {
+  width: 180px;
+  height: 48px;
+
+  border: none;
+  border-radius: 5px;
+
+  background: #1f5b3f;
+
+  color: #fff;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.save-button:hover {
+  transform: scale(1.02);
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+
+  .modal-container {
+    padding: 28px 24px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .modal-actions {
+    justify-content: center;
+  }
+
+  .save-button {
+    width: 100%;
+  }
+}
+
+
+/* =========================
+   MODAL DELETAR OVERLAY
+========================= */
+
+.modal-deletar-overlay {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background-color: rgba(0, 0, 0, 0.35);
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  z-index: 999;
+}
+
+/* =========================
+   MODAL DELETAR CONTAINER
+========================= */
+
+.modal-deletar-container {
+  width: 620px;
+
+  background-color: #f3ece5;
+
+  border-radius: 6px;
+
+  padding: 28px;
+
+  position: relative;
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* =========================
+   BOTÃO FECHAR
+========================= */
+
+.modal-deletar-close-button {
+  position: absolute;
+
+  top: 18px;
+  right: 18px;
+
+  border: none;
+
+  background: none;
+
+  font-size: 22px;
+
+  cursor: pointer;
+
+  color: #2b2b2b;
+}
+
+/* =========================
+   HEADER MODAL
+========================= */
+
+.modal-deletar-header h1 {
+  font-size: 34px;
+
+  font-weight: 700;
+
+  color: #1e1e1e;
+
+  margin-bottom: 6px;
+}
+
+.modal-deletar-header p {
+  color: #3e3e3e;
+
+  margin-bottom: 22px;
+
+  font-size: 17px;
+}
+
+/* =========================
+   INFORMAÇÕES
+========================= */
+
+.modal-deletar-user-info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modal-deletar-info-box {
+  background-color: #c9b195;
+
+  padding: 14px 16px;
+
+  border-radius: 5px;
+
+  color: #1f1f1f;
+
+  font-size: 16px;
+
+  font-weight: 500;
+}
+
+/* =========================
+   ALERTA
+========================= */
+
+.modal-deletar-warning-text {
+  margin-top: 22px;
+
+  font-size: 18px;
+
+  color: #1f1f1f;
+
+  font-weight: 500;
+}
+
+/* =========================
+   AÇÕES
+========================= */
+
+.modal-deletar-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  margin-top: 22px;
+}
+
+/* =========================
+   BOTÃO CONFIRMAR
+========================= */
+
+.modal-deletar-confirm-button {
+  background-color: #0d5b3d;
+
+  color: white;
+
+  border: none;
+
+  padding: 14px 26px;
+
+  border-radius: 5px;
+
+  font-size: 16px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.modal-deletar-confirm-button:hover {
+  opacity: 0.9;
+}

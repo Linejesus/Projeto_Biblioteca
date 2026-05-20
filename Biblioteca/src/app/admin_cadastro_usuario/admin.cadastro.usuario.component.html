@@ -1,0 +1,68 @@
+<div class="page-container">
+
+  <!-- HEADER -->
+  <app-admin-header></app-admin-header>
+
+  <!-- CONTEÚDO -->
+  <main class="content-container">
+
+    <!-- SIDEBAR -->
+    <app-admin-sidebar></app-admin-sidebar>
+
+    <!-- FORMULÁRIO -->
+    <section class="form-container">
+
+      <div class="form-header">
+
+        <h1>Cadastro de Novo Usuário</h1>
+
+        <p>
+          Preencha as informações do novo leitor
+        </p>
+
+      </div>
+
+
+      <form [formGroup]="cadastroForm" (ngSubmit)="cadastrar()">
+
+        <div class="input-group">
+          <label>Nome Completo *</label>
+          <input type="text" placeholder="" formControlName="nome">
+          <div *ngIf="nomeInvalido">Campo obrigatório!</div>
+        </div>
+
+        <div class="input-group">
+          <label>CPF *</label>
+          <input type="text" placeholder="" formControlName="cpf">
+          <div *ngIf="cpfInvalido">Campo obrigatório!</div>
+        </div>
+
+        <div class="input-group">
+          <label>Email *</label>
+          <input type="email" placeholder="" formControlName="email">
+          <div *ngIf="emailInvalido">Campo obrigatório!</div>
+        </div>
+
+        <div class="input-group">
+          <label>Senha *</label>
+          <input type="password" placeholder="" formControlName="senha">
+          <div *ngIf="senhaInvalida">Campo obrigatório!</div>
+        </div>
+
+        <div class="buttons-container">
+
+          <button class="save-btn" type="submit">
+            Salvar Cadastro
+          </button>
+
+        </div>
+
+      </form>
+
+      
+
+    </section>
+
+  </main>
+
+</div>

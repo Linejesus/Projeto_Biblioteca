@@ -1,0 +1,74 @@
+<div class="page-container">
+
+  <!-- HEADER -->
+  <app-header></app-header>
+
+  <!-- CONTEÚDO -->
+  <main class="content-container">
+
+    <div
+      class="loan-card"
+      *ngFor="let emprestimo of emprestimos"
+    >
+
+      <!-- IMAGEM -->
+      <div class="book-image">
+
+        <img [src]="emprestimo.capa" alt="Livro">
+
+      </div>
+
+      <!-- INFO -->
+      <div class="book-info">
+
+        <h2>
+          {{ emprestimo.titulo }}
+        </h2>
+
+        <span class="author">
+          {{ emprestimo.autores[0].nome }}
+        </span>
+
+        <p>
+          <strong>Data do Empréstimo:</strong>
+
+          {{ emprestimo.dataEmprestimo }}
+        </p>
+
+        <p>
+          <strong>Data da Devolução:</strong>
+
+          {{ emprestimo.dataDevolucaoPrevista }}
+        </p>
+
+        <p>
+          <strong>Renovações:</strong>
+
+          {{ emprestimo.renovacoes }}
+        </p>
+
+        <p
+          class="status"
+          [ngClass]="{
+            'available': emprestimo.status === 'EM_DIA',
+            'delayed': emprestimo.status === 'ATRASADO'
+          }"
+        >
+
+          <strong>Status:</strong>
+
+          {{ emprestimo.status }}
+
+        </p>
+
+        <button (click)="renovarEmprestimo(emprestimo.idEmprestimo)">
+          Renovar
+        </button>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>

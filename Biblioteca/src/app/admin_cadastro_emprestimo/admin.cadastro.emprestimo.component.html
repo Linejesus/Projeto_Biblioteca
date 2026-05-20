@@ -1,0 +1,72 @@
+<div class="page-container">
+
+  <!-- HEADER -->
+  <app-admin-header></app-admin-header>
+
+  <!-- CONTEÚDO -->
+  <main class="content-container">
+
+    <!-- SIDEBAR -->
+    <app-admin-sidebar></app-admin-sidebar>
+
+    <!-- FORMULÁRIO -->
+    <section class="form-container">
+
+      <div class="form-header">
+
+        <h1>Cadastro de Novo Empréstimo</h1>
+
+        <p>
+          Preencha as informações do novo empréstimo
+        </p>
+
+      </div>
+
+      <form [formGroup]="cadastroForm" (ngSubmit)="cadastrar()">
+
+        <!-- USUÁRIO -->
+        <div class="input-group">
+
+          <label>ID Usuário *</label>
+          <input type="number" formControlName="idUsuario" placeholder="Ex: 1" required>
+
+          <small>Consulte o ID na tela de listar usuários</small>
+
+        </div>
+
+        <!-- LIVRO -->
+        <div class="input-group">
+
+          <label>ID Livro *</label>
+          <input type="text" formControlName="idLivro" placeholder="Ex: 685a9d..." required>
+
+          <small>Consulte o ID na tela de listar livros</small>
+
+        </div>
+
+        <!-- BIBLIOTECA -->
+        <div class="input-group">
+
+          <label>ID Biblioteca *</label>
+          <input type="number" formControlName="idBiblioteca" placeholder="Ex: 1" required>
+
+          <small>Consulte o ID na tela de listar bibliotecas</small>
+
+        </div>
+
+        <!-- BOTÕES -->
+        <div class="buttons-container">
+
+          <button class="save-btn" type="submit">
+            Salvar Cadastro
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+  </main>
+
+</div>

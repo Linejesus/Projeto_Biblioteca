@@ -1,0 +1,210 @@
+<div class="page-container">
+
+  <!-- HEADER -->
+  <app-admin-header></app-admin-header>
+
+  <!-- CONTEÚDO -->
+  <main>
+
+    <div class="admin-page">
+
+      <!-- SIDEBAR -->
+      <app-admin-sidebar></app-admin-sidebar>
+
+      <!-- CONTEÚDO -->
+      <section class="content-container">
+
+        <!-- TOPO -->
+        <div class="content-header">
+
+          <h1>Lista de Multas</h1>
+
+          <div class="search-box">
+
+            <span class="search-icon">⌕</span>
+
+            <input type="text" placeholder="Busque por ID ou Data da Multa..." [(ngModel)]="termoBusca" (input)="filtrar()">
+
+          </div>
+
+        </div>
+
+        <!-- TABELA -->
+        <div class="table-container">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>ID</th>
+                <th>ID Emprestimo</th>
+                <th>Data da Multa</th>
+                <th>Dias em Atraso</th>
+                <th>Valor</th>
+                <th>Pago</th>
+                <th>Data do Pagamento</th>
+                <th>Ações</th>
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <tr *ngFor="let multa of multasPaginadas">
+
+                <td>{{ multa.idMulta }}</td>
+
+                <td>{{ multa.idEmprestimo }}</td>
+
+                <td>{{ multa.dataMulta | date:'dd/MM/yyyy' }}</td>
+
+                <td>{{ multa.diasAtraso }}</td>
+
+                <td>R$ {{ multa.valorTotal | number:'1.2-2' }}</td>
+
+                <td>{{ multa.paga ? 'Sim' : 'Não' }}</td>
+
+                <td>{{ multa.dataPagamento | date:'dd/MM/yyyy' }}</td>
+
+                <td class="actions">
+
+                  <button (click)="abrirModalAlterar(multa)" class="edit-btn">
+                    <img src="assets/alterar.png" alt="Caneta">
+                  </button>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+          <!-- PAGINAÇÃO -->
+          <div class="pagination" *ngIf="totalPaginas > 1">
+
+            <span
+              [class.disabled]="paginaAtual === 1"
+              (click)="irParaPagina(paginaAtual - 1)"
+            >
+              Anterior
+            </span>
+
+            <ng-container *ngFor="let pagina of paginas">
+              <span
+                [class.active]="pagina === paginaAtual"
+                (click)="irParaPagina(pagina)"
+              >
+                {{ pagina }}
+              </span>
+              <span *ngIf="pagina !== totalPaginas" class="separator">|</span>
+            </ng-container>
+
+            <span
+              [class.disabled]="paginaAtual === totalPaginas"
+              (click)="irParaPagina(paginaAtual + 1)"
+            >
+              Próxima
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- MODAL ALTERAR USUÁRIO -->
+      <div class="modal-overlay" *ngIf="modalAlterarAberto">
+
+        <div class="modal-container">
+
+          <button (click)="modalAlterarAberto = false" class="close-button">
+            X
+          </button>
+
+          <div class="modal-header">
+
+            <h1>Alterar Dados da Multa</h1>
+
+            <span class="user-id">
+              Multa ID: {{ multaSelecionada.idMulta }}
+            </span>
+
+          </div>
+
+          <form class="form-container">
+
+            <div class="form-grid">
+
+              <div class="form-group">
+
+                <label>ID</label>
+                <input type="text" [(ngModel)]="multaSelecionada.idMulta" name="idMulta" disabled>
+
+              </div>
+
+              <div class="form-group">
+
+                <label>ID Empréstimo</label>
+                <input type="text" [(ngModel)]="multaSelecionada.idEmprestimo" name="idEmprestimo" disabled>
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Data da Multa</label>
+
+                <input type="date" [(ngModel)]="multaSelecionada.dataMulta" name="dataMulta" disabled>
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Valor</label>
+                <input type="number" [(ngModel)]="multaSelecionada.valorTotal" name="valor" step="0.01" disabled>
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Pago</label>
+                <input type="checkbox" [(ngModel)]="multaSelecionada.paga" name="paga" disabled>
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Dias de Atraso</label>
+                <input type="number" [(ngModel)]="multaSelecionada.diasAtraso" name="diasAtraso" disabled>
+
+              </div>
+              <div class="form-group">
+
+                <label>Data de Pagamento</label>
+                <input type="date" [(ngModel)]="multaSelecionada.dataPagamento" name="dataPagamento" disabled>
+
+              </div>
+
+            </div>
+
+            <div class="modal-actions">
+
+              <button type="button" class="save-button" (click)="salvarAlteracoes()">
+                Atualizar pagamento
+              </button>
+
+            </div>
+
+          </form>
+          
+        </div>
+
+      </div>
+
+    </div>
+
+ </main>
+
+</div>
