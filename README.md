@@ -50,11 +50,9 @@ O **PostgreSQL** será responsável pelo armazenamento de dados estruturados e t
 
 - Usuários
 - Empréstimos
-- Devoluções
+- Bibliotecas
 - Multas
-- Histórico de empréstimos
-- Controle de bibliotecas
-
+- 
 #### Motivos da escolha:
 - Alta consistência e integridade dos dados;
 - Uso de chaves primárias e estrangeiras;
@@ -69,10 +67,11 @@ O **MongoDB** será utilizado para armazenar informações relacionadas aos livr
 
 Exemplos de dados armazenados:
 - Título
+- Ano de publicação
 - Autores
-- Categorias
+- Editora
 - Edições
-- ISBN
+- Gêneros
 - Tags
 - Informações complementares
 
@@ -89,10 +88,10 @@ Exemplos de dados armazenados:
 O **Neo4j** será utilizado para representar e consultar relações complexas entre entidades do sistema.
 
 Exemplos de relações:
-- Usuário → emprestou → Livro
-- Livro → pertence à → Biblioteca
-- Livro → relacionado com → Livro
-- Usuário → frequenta → Biblioteca
+- Pessoa → pegou → Livro
+- Biblioteca → possui → Livro
+- Livro → sequencia_de → Livro
+- Pessoa → frequenta → Biblioteca
 
 #### Motivos da escolha:
 - Alta performance em consultas relacionais complexas;
